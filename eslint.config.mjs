@@ -47,7 +47,6 @@ export default defineConfig([
         'plugin:sonarjs/recommended',
         'plugin:promise/recommended',
         'plugin:@tanstack/eslint-plugin-query/recommended',
-        'plugin:cypress/recommended',
       ),
     ),
 

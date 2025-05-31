@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode } from 'react';
 
 export type RootLayoutProps = Readonly<{
   children: ReactNode;

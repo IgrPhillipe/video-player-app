@@ -3,9 +3,9 @@ export const parseNumber = (value: string | undefined): number => {
 
   const parsedValue = Number(
     value
-      .replaceAll(".", "")
-      .replaceAll(",", ".")
-      .replace(/[^0-9,.]/g, "")
+      .replaceAll('.', '')
+      .replaceAll(',', '.')
+      .replace(/[^0-9,.]/g, ''),
   );
 
   if (isNaN(parsedValue)) return 0;

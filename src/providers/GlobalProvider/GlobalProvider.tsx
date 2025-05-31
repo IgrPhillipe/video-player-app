@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import { TanstackProvider } from "../TanstackProvider";
-import { ThemeProvider } from "../ThemeProvider";
-import { TransitionProvider, TransitionVariants } from "../TransitionProvider";
+import { TanstackProvider } from '../TanstackProvider';
+import { ThemeProvider } from '../ThemeProvider';
+import { TransitionProvider, TransitionVariants } from '../TransitionProvider';
 
 type GlobalProviderProps = Readonly<{
   children: ReactNode;
@@ -11,11 +11,11 @@ type GlobalProviderProps = Readonly<{
 const transitionVariants: TransitionVariants = {
   enter: {
     opacity: 1,
-    transition: { duration: 0.8, ease: "easeOut" },
+    transition: { duration: 0.8, ease: 'easeOut' },
   },
   exit: {
     opacity: 0,
-    transition: { duration: 0.8, ease: "easeIn" },
+    transition: { duration: 0.8, ease: 'easeIn' },
   },
 };
 
