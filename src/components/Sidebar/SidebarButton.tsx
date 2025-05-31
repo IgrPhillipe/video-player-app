@@ -30,7 +30,7 @@ export const SidebarButton = ({ name, icon: Icon, onClick, className }: SidebarB
     >
       <SidebarMenuButton asChild>
         <div className="flex items-center gap-2">
-          <Icon ref={iconRef} size={16} />
+          <Icon ref={iconRef} size={16} className="fill-transparent" />
           <span>{name}</span>
         </div>
       </SidebarMenuButton>

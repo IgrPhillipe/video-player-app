@@ -1,37 +1,44 @@
 'use client';
 
-import Link from 'next/link';
+import { FavoriteButton } from '@/components/FavoriteButton';
+import { ShareButton } from '@/components/ShareButton';
+import { Switch } from '@/components/ui/switch';
+import { VideoCard } from '@/components/VideoCard';
 
 export const Video = () => (
-  <div className="flex flex-1 flex-col gap-4 h-full w-full">
-    <div className="grid auto-rows-auto gap-y-6 gap-x-8 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 w-full pb-8">
-      {Array.from({ length: 32 }).map((_, index) => (
-        <Link href={`/${index}`} key={index}>
-          <div className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
-            <div className="relative h-48 w-full bg-neutral-900 rounded-xl overflow-hidden group-hover:shadow-md animate">
-              {/* <Image
-                src="/images/placeholder.png"
-                alt="Placeholder"
-                fill
-                className="object-cover"
-              /> */}
-              <div className="px-1 text-xs bg-white/50 rounded-full absolute bottom-2 right-2">
-                <small>00:15</small>
-              </div>
-            </div>
+  <div className="flex lg:flex-row flex-col gap-8 h-full w-full">
+    <div className="flex flex-col sticky top-6 w-full bg-foreground rounded-xl h-fit">
+      <div className="flex w-full rounded-xl overflow-hidden aspect-video bg-blue-200 shadow-sm" />
+      <div className="flex gap-4 w-full h-fit px-4 py-6 items-start">
+        <div className="flex flex-col w-full">
+          <h1 className="text-2xl font-bold text-accent-foreground">Video Title</h1>
+          <p className="text-sm text-accent-foreground">Video Description</p>
+        </div>
+        <div className="flex gap-2 w-fit">
+          <FavoriteButton />
+          <ShareButton />
+        </div>
+      </div>
+    </div>
 
-            <div className="flex flex-col px-2">
-              <p className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet
-                consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit
-              </p>
-              <p className="text-sm text-muted-foreground line-clamp-1 text-ellipsis">
-                Lorem ipsum dolor
-              </p>
-            </div>
-          </div>
-        </Link>
-      ))}
+    <div className="flex w-1/3 max-w-80 flex-col gap-6 h-full">
+      <div className="rounded-xl h-12 text-accent-foreground bg-foreground w-full p-4 flex justify-between items-center">
+        <p>Autoplay</p>
+        <Switch />
+      </div>
+
+      <div className="flex flex-col gap-4 p-2 flex-1 w-full">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <VideoCard
+            key={index}
+            href={`/video/${index}`}
+            title="Lorem ipsum dolor sit amet consectetur adipisicing elit"
+            duration="00:15"
+            thumbnail="https://via.placeholder.com/150"
+            author="John Doe"
+          />
+        ))}
+      </div>
     </div>
   </div>
 );
