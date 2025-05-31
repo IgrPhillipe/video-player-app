@@ -1,10 +1,10 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import type { Variants } from 'motion/react';
 import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@/lib/utils';
 
 export interface CloudSunIconHandle {
   startAnimation: () => void;
@@ -68,7 +68,7 @@ const CloudSunIcon = forwardRef<CloudSunIconHandle, CloudSunIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [cloudControls, sunControls, onMouseEnter]
+      [cloudControls, sunControls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -80,7 +80,7 @@ const CloudSunIcon = forwardRef<CloudSunIconHandle, CloudSunIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [cloudControls, sunControls, onMouseLeave]
+      [cloudControls, sunControls, onMouseLeave],
     );
 
     return (
@@ -102,11 +102,7 @@ const CloudSunIcon = forwardRef<CloudSunIconHandle, CloudSunIconProps>(
           strokeLinejoin="round"
           style={{ overflow: 'visible' }}
         >
-          <motion.g
-            variants={cloudVariants}
-            animate={cloudControls}
-            initial="normal"
-          >
+          <motion.g variants={cloudVariants} animate={cloudControls} initial="normal">
             <path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z" />
           </motion.g>
           {[
@@ -128,7 +124,7 @@ const CloudSunIcon = forwardRef<CloudSunIconHandle, CloudSunIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 CloudSunIcon.displayName = 'CloudSunIcon';

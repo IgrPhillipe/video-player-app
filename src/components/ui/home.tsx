@@ -1,10 +1,10 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import type { Transition, Variants } from 'motion/react';
 import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@/lib/utils';
 
 export interface HomeIconHandle {
   startAnimation: () => void;
@@ -53,7 +53,7 @@ const HomeIcon = forwardRef<HomeIconHandle, HomeIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -64,7 +64,7 @@ const HomeIcon = forwardRef<HomeIconHandle, HomeIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
     return (
       <div
@@ -94,7 +94,7 @@ const HomeIcon = forwardRef<HomeIconHandle, HomeIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 HomeIcon.displayName = 'HomeIcon';

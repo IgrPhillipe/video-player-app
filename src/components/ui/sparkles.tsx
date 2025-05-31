@@ -1,10 +1,10 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import type { Variants } from 'motion/react';
 import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@/lib/utils';
 
 export interface SparklesIconHandle {
   startAnimation: () => void;
@@ -78,7 +78,7 @@ const SparklesIcon = forwardRef<SparklesIconHandle, SparklesIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [onMouseEnter, sparkleControls, starControls]
+      [onMouseEnter, sparkleControls, starControls],
     );
 
     const handleMouseLeave = useCallback(
@@ -90,7 +90,7 @@ const SparklesIcon = forwardRef<SparklesIconHandle, SparklesIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [sparkleControls, starControls, onMouseLeave]
+      [sparkleControls, starControls, onMouseLeave],
     );
 
     return (
@@ -116,30 +116,14 @@ const SparklesIcon = forwardRef<SparklesIconHandle, SparklesIconProps>(
             variants={sparkleVariants}
             animate={sparkleControls}
           />
-          <motion.path
-            d="M20 3v4"
-            variants={starVariants}
-            animate={starControls}
-          />
-          <motion.path
-            d="M22 5h-4"
-            variants={starVariants}
-            animate={starControls}
-          />
-          <motion.path
-            d="M4 17v2"
-            variants={starVariants}
-            animate={starControls}
-          />
-          <motion.path
-            d="M5 18H3"
-            variants={starVariants}
-            animate={starControls}
-          />
+          <motion.path d="M20 3v4" variants={starVariants} animate={starControls} />
+          <motion.path d="M22 5h-4" variants={starVariants} animate={starControls} />
+          <motion.path d="M4 17v2" variants={starVariants} animate={starControls} />
+          <motion.path d="M5 18H3" variants={starVariants} animate={starControls} />
         </svg>
       </div>
     );
-  }
+  },
 );
 
 SparklesIcon.displayName = 'SparklesIcon';

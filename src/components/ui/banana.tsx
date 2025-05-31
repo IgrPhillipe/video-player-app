@@ -1,10 +1,10 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import type { Transition, Variants } from 'motion/react';
 import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@/lib/utils';
 
 export interface BananaIconHandle {
   startAnimation: () => void;
@@ -57,7 +57,7 @@ const BananaIcon = forwardRef<BananaIconHandle, BananaIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -68,7 +68,7 @@ const BananaIcon = forwardRef<BananaIconHandle, BananaIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -106,7 +106,7 @@ const BananaIcon = forwardRef<BananaIconHandle, BananaIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 BananaIcon.displayName = 'BananaIcon';

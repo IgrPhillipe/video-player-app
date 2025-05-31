@@ -1,4 +1,5 @@
 import { CustomIcon } from '@/types';
+import Link from 'next/link';
 import { useRef } from 'react';
 import { SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
@@ -22,10 +23,10 @@ export const SidebarItem = ({ name, url, icon: Icon }: SidebarItemProps) => {
   return (
     <SidebarMenuItem onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <SidebarMenuButton asChild>
-        <a href={url}>
+        <Link prefetch href={url}>
           <Icon ref={iconRef} size={16} />
           <span>{name}</span>
-        </a>
+        </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

@@ -1,10 +1,10 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import type { Variants } from 'motion/react';
 import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@/lib/utils';
 
 export interface BoneIconHandle {
   startAnimation: () => void;
@@ -50,7 +50,7 @@ const BoneIcon = forwardRef<BoneIconHandle, BoneIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -61,7 +61,7 @@ const BoneIcon = forwardRef<BoneIconHandle, BoneIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
     return (
       <div
@@ -89,7 +89,7 @@ const BoneIcon = forwardRef<BoneIconHandle, BoneIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 BoneIcon.displayName = 'BoneIcon';

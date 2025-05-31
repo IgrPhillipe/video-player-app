@@ -1,10 +1,10 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import type { Variants } from 'motion/react';
 import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@/lib/utils';
 
 export interface UsersIconHandle {
   startAnimation: () => void;
@@ -57,7 +57,7 @@ const UsersIcon = forwardRef<UsersIconHandle, UsersIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -68,7 +68,7 @@ const UsersIcon = forwardRef<UsersIconHandle, UsersIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -91,20 +91,12 @@ const UsersIcon = forwardRef<UsersIconHandle, UsersIconProps>(
         >
           <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
           <circle cx="9" cy="7" r="4" />
-          <motion.path
-            d="M22 21v-2a4 4 0 0 0-3-3.87"
-            variants={pathVariants}
-            animate={controls}
-          />
-          <motion.path
-            d="M16 3.13a4 4 0 0 1 0 7.75"
-            variants={pathVariants}
-            animate={controls}
-          />
+          <motion.path d="M22 21v-2a4 4 0 0 0-3-3.87" variants={pathVariants} animate={controls} />
+          <motion.path d="M16 3.13a4 4 0 0 1 0 7.75" variants={pathVariants} animate={controls} />
         </svg>
       </div>
     );
-  }
+  },
 );
 
 UsersIcon.displayName = 'UsersIcon';
