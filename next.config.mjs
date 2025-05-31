@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: '/vivo-ai-client',
   images: {
     unoptimized: true,
   },

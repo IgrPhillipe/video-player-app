@@ -22,7 +22,7 @@ const transitionVariants: TransitionVariants = {
 export const GlobalProvider = async ({ children }: GlobalProviderProps) => (
   <TransitionProvider variants={transitionVariants}>
     <TanstackProvider>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
         {children}
       </ThemeProvider>
     </TanstackProvider>

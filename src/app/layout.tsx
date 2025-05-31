@@ -21,7 +21,7 @@ type RootLayoutProps = Readonly<{
 }>;
 
 const RootLayout = ({ children }: RootLayoutProps) => (
-  <html lang="pt_BR" className={fontSans.variable}>
+  <html lang="pt_BR" className={fontSans.variable} suppressHydrationWarning>
     <body>
       <GlobalProvider>{children}</GlobalProvider>
     </body>
