@@ -2,6 +2,7 @@ import { fixupConfigRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
+import sonarjs from 'eslint-plugin-sonarjs';
 import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
@@ -44,7 +45,6 @@ export default defineConfig([
         'plugin:react/jsx-runtime',
         'plugin:jsx-a11y/recommended',
         'plugin:prettier/recommended',
-        'plugin:sonarjs/recommended',
         'plugin:promise/recommended',
         'plugin:@tanstack/eslint-plugin-query/recommended',
       ),
@@ -52,6 +52,7 @@ export default defineConfig([
 
     plugins: {
       'unused-imports': unusedImports,
+      sonarjs,
     },
 
     languageOptions: {
@@ -89,7 +90,9 @@ export default defineConfig([
       'linebreak-style': 'off',
       'react/prop-types': 'off',
       'no-debugger': 'off',
-      'arrow-body-style': ['error', 'as-needed'],
+      'arrow-body-style': ['error', 'as-needed', { requireReturnForObjectLiteral: false }],
+      'prefer-arrow-callback': ['error', { allowNamedFunctions: true }],
+      'prefer-const': 'error',
 
       'react/self-closing-comp': [
         'error',

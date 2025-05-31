@@ -19,19 +19,12 @@ const transitionVariants: TransitionVariants = {
   },
 };
 
-export const GlobalProvider = async ({ children }: GlobalProviderProps) => {
-  return (
-    <TransitionProvider variants={transitionVariants}>
-      <TanstackProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </TanstackProvider>
-    </TransitionProvider>
-  );
-};
+export const GlobalProvider = async ({ children }: GlobalProviderProps) => (
+  <TransitionProvider variants={transitionVariants}>
+    <TanstackProvider>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        {children}
+      </ThemeProvider>
+    </TanstackProvider>
+  </TransitionProvider>
+);
