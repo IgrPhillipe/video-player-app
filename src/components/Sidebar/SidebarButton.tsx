@@ -1,17 +1,16 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import { CustomIcon } from '@/types';
-import Link from 'next/link';
 import { useRef } from 'react';
 import { SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
-export type SidebarItemProps = {
+export type SidebarButtonProps = {
   name: string;
-  url: string;
   icon: CustomIcon;
-};
+} & React.ComponentProps<typeof SidebarMenuItem>;
 
-export const SidebarItem = ({ name, url, icon: Icon }: SidebarItemProps) => {
+export const SidebarButton = ({ name, icon: Icon, onClick, className }: SidebarButtonProps) => {
   const iconRef = useRef<any>(null);
 
   const handleMouseEnter = () => {
@@ -23,12 +22,17 @@ export const SidebarItem = ({ name, url, icon: Icon }: SidebarItemProps) => {
   };
 
   return (
-    <SidebarMenuItem onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <SidebarMenuItem
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      className={cn('cursor-pointer list-none', className)}
+    >
       <SidebarMenuButton asChild>
-        <Link prefetch href={url}>
+        <div className="flex items-center gap-2">
           <Icon ref={iconRef} size={16} />
           <span>{name}</span>
-        </Link>
+        </div>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

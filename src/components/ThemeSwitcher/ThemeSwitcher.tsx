@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
 import { MoonIcon } from '@/components/ui/moon';
 import { SunIcon } from '@/components/ui/sun';
 import { useTheme } from 'next-themes';
+import { SidebarButton } from '../Sidebar/SidebarButton';
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
@@ -15,15 +15,9 @@ export const ThemeSwitcher = () => {
     setTheme('dark');
   };
 
+  const Icon = isDark ? SunIcon : MoonIcon;
+
   return (
-    <Button
-      onClick={handleThemeChange}
-      data-sidebar="trigger"
-      variant="ghost"
-      size="icon"
-      className="h-7 w-7"
-    >
-      {isDark ? <SunIcon /> : <MoonIcon />}
-    </Button>
+    <SidebarButton name={isDark ? 'Claro' : 'Escuro'} icon={Icon} onClick={handleThemeChange} />
   );
 };

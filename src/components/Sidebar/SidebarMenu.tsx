@@ -3,20 +3,21 @@
 import * as React from 'react';
 
 import { SidebarLogo } from '@/components/Sidebar/SidebarLogo';
-import { SidebarMainContent } from '@/components/Sidebar/SidebarMainContent';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import { BananaIcon } from '@/components/ui/banana';
+import { BoneIcon } from '@/components/ui/bone';
+import { CloudSunIcon } from '@/components/ui/cloud-sun';
+import { HeartIcon } from '@/components/ui/heart';
+import { HomeIcon } from '@/components/ui/home';
+import { MapPinIcon } from '@/components/ui/map-pin';
+import { MonitorCheckIcon } from '@/components/ui/monitor-check';
+import { RocketIcon } from '@/components/ui/rocket';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
-import { ThemeSwitcher } from '../ThemeSwitcher';
-import { BananaIcon } from '../ui/banana';
-import { BoneIcon } from '../ui/bone';
-import { CloudSunIcon } from '../ui/cloud-sun';
-import { HeartIcon } from '../ui/heart';
-import { HomeIcon } from '../ui/home';
-import { MapPinIcon } from '../ui/map-pin';
-import { MonitorCheckIcon } from '../ui/monitor-check';
-import { RocketIcon } from '../ui/rocket';
-import { SparklesIcon } from '../ui/sparkles';
-import { UsersIcon } from '../ui/users';
+import { SparklesIcon } from '@/components/ui/sparkles';
+import { UsersIcon } from '@/components/ui/users';
 import { SidebarCategories } from './SidebarCategories';
+import { SidebarMenuContent } from './SidebarMenuContent';
+import { SidebarTrigger } from './SidebarTrigger';
 
 const SIDEBAR_MAIN_CONTENT = [
   {
@@ -81,12 +82,13 @@ export const SidebarMenu = ({ ...props }: React.ComponentProps<typeof Sidebar>) 
     </SidebarHeader>
 
     <SidebarContent>
-      <SidebarMainContent items={SIDEBAR_MAIN_CONTENT} />
+      <SidebarMenuContent items={SIDEBAR_MAIN_CONTENT} />
       <SidebarCategories categories={SIDEBAR_CATEGORIES} />
     </SidebarContent>
 
     <SidebarFooter>
       <ThemeSwitcher />
+      <SidebarTrigger />
     </SidebarFooter>
   </Sidebar>
 );

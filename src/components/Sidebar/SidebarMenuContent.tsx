@@ -3,11 +3,11 @@
 import { SidebarGroup, SidebarMenu } from '@/components/ui/sidebar';
 import { SidebarItem, SidebarItemProps } from './SidebarItem';
 
-type SidebarMainContentProps = {
+type SidebarMenuContentProps = {
   items: SidebarItemProps[];
 };
 
-export const SidebarMainContent = ({ items }: SidebarMainContentProps) => (
+export const SidebarMenuContent = ({ items }: SidebarMenuContentProps) => (
   <SidebarGroup>
     <SidebarMenu>
       {items.map((item) => (
