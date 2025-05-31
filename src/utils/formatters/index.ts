@@ -1,4 +1,3 @@
-export * from "./base64ToFile";
 export * from "./brlToCents";
 export * from "./centsToNumber";
 export * from "./fileToBase64";

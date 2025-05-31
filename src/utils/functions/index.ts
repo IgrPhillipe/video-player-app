@@ -1,5 +1,4 @@
 export * from "./appendSearchParams";
-export * from "./downloadFile";
 export * from "./getInitialLetters";
 export * from "./mask";
 export * from "./loadFeatures";
