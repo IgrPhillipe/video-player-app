@@ -1,7 +1,8 @@
 'use client';
 
-import { CustomIcon } from '@/types';
+import { CustomIcon, CustomIconHandle } from '@/types';
 import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useRef } from 'react';
 import { SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
@@ -12,7 +13,10 @@ export type SidebarItemProps = {
 };
 
 export const SidebarItem = ({ name, url, icon: Icon }: SidebarItemProps) => {
-  const iconRef = useRef<any>(null);
+  const iconRef = useRef<CustomIconHandle>(null);
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const handleMouseEnter = () => {
     iconRef.current?.startAnimation();
@@ -22,9 +26,15 @@ export const SidebarItem = ({ name, url, icon: Icon }: SidebarItemProps) => {
     iconRef.current?.stopAnimation();
   };
 
+  const category = searchParams.get('category');
+
+  const isActive = category
+    ? url.includes(category)
+    : pathname === url || (url !== '/' && pathname.startsWith(url + '/'));
+
   return (
     <SidebarMenuItem onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <SidebarMenuButton asChild>
+      <SidebarMenuButton asChild isActive={isActive}>
         <Link prefetch href={url}>
           <Icon ref={iconRef} size={16} />
           <span>{name}</span>

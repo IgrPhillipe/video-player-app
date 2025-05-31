@@ -2,11 +2,12 @@
 
 import { Input } from '@/components/ui/input';
 import { SearchIcon } from '@/components/ui/search';
+import { CustomIconHandle } from '@/types';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export const SearchInput = () => {
-  const iconRef = useRef<any>(null);
+  const iconRef = useRef<CustomIconHandle>(null);
 
   const [internalSearch, setInternalSearch] = useState('');
 
@@ -51,7 +52,7 @@ export const SearchInput = () => {
         onClick={handleSubmit}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="absolute inset-y-0 end-0 w-12 flex items-center justify-center h-full bg-accent rounded-r-lg px-2 text-muted-foreground"
+        className="absolute inset-y-0 end-0 w-12 flex items-center justify-center h-full dark:bg-accent bg-neutral-300 rounded-r-lg px-2 text-muted-foreground"
       >
         <SearchIcon ref={iconRef} size={16} />
       </button>

@@ -40,37 +40,37 @@ const SIDEBAR_MAIN_CONTENT = [
 const SIDEBAR_CATEGORIES = [
   {
     name: 'Natureza',
-    url: '#',
+    url: '/?category=natureza',
     icon: CloudSunIcon,
   },
   {
     name: 'Animais',
-    url: '#',
+    url: '/?category=animais',
     icon: BoneIcon,
   },
   {
     name: 'Cidade',
-    url: '#',
+    url: '/?category=cidade',
     icon: MapPinIcon,
   },
   {
     name: 'Pessoas',
-    url: '#',
+    url: '/?category=pessoas',
     icon: UsersIcon,
   },
   {
     name: 'Comida',
-    url: '#',
+    url: '/?category=comida',
     icon: BananaIcon,
   },
   {
     name: 'Abstrato',
-    url: '#',
+    url: '/?category=abstrato',
     icon: SparklesIcon,
   },
   {
     name: 'Universo',
-    url: '#',
+    url: '/?category=universo',
     icon: RocketIcon,
   },
 ];

@@ -3,7 +3,6 @@ import '../styles/globals.css';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 
-import { RootLayout } from '@/components/RootLayout';
 import { GlobalProvider } from '@/providers';
 import { RootLayoutProps } from '@/types';
 
@@ -20,9 +19,7 @@ export const metadata: Metadata = {
 const Root = ({ children }: RootLayoutProps) => (
   <html lang="pt_BR" className={fontSans.variable} suppressHydrationWarning>
     <body>
-      <GlobalProvider>
-        <RootLayout>{children}</RootLayout>
-      </GlobalProvider>
+      <GlobalProvider>{children}</GlobalProvider>
     </body>
   </html>
 );

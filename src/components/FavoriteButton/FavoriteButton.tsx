@@ -1,8 +1,9 @@
 import { CustomHeartIcon } from '@/components/ui/custom-heart';
+import { CustomIconHandle } from '@/types';
 import { useRef } from 'react';
 
 export const FavoriteButton = () => {
-  const iconRef = useRef<any>(null);
+  const iconRef = useRef<CustomIconHandle>(null);
 
   const handleMouseEnter = () => {
     iconRef.current?.startAnimation();

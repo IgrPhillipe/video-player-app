@@ -22,3 +22,8 @@ export type CustomIcon = ForwardRefExoticComponent<
     size?: number;
   } & RefAttributes<any>
 >;
+
+export type CustomIconHandle = {
+  startAnimation: () => void;
+  stopAnimation: () => void;
+};

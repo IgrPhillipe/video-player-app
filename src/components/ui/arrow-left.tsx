@@ -1,20 +1,42 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import type { Variants } from 'motion/react';
 import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
-export interface SearchIconHandle {
+export interface ArrowLeftIconHandle {
   startAnimation: () => void;
   stopAnimation: () => void;
 }
 
-interface SearchIconProps extends HTMLAttributes<HTMLDivElement> {
+interface ArrowLeftIconProps extends HTMLAttributes<HTMLDivElement> {
   size?: number;
 }
 
-const SearchIcon = forwardRef<SearchIconHandle, SearchIconProps>(
+const pathVariants: Variants = {
+  normal: { d: 'm12 19-7-7 7-7', translateX: 0 },
+  animate: {
+    d: 'm12 19-7-7 7-7',
+    translateX: [0, 3, 0],
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
+
+const secondPathVariants: Variants = {
+  normal: { d: 'M19 12H5' },
+  animate: {
+    d: ['M19 12H5', 'M19 12H10', 'M19 12H5'],
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
+
+const ArrowLeftIcon = forwardRef<ArrowLeftIconHandle, ArrowLeftIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {
     const controls = useAnimation();
     const isControlledRef = useRef(false);
@@ -57,7 +79,7 @@ const SearchIcon = forwardRef<SearchIconHandle, SearchIconProps>(
         onMouseLeave={handleMouseLeave}
         {...props}
       >
-        <motion.svg
+        <svg
           xmlns="http://www.w3.org/2000/svg"
           width={size}
           height={size}
@@ -67,27 +89,15 @@ const SearchIcon = forwardRef<SearchIconHandle, SearchIconProps>(
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          variants={{
-            normal: { x: 0, y: 0 },
-            animate: {
-              x: [0, 0, -3, 0],
-              y: [0, -4, 0, 0],
-            },
-          }}
-          transition={{
-            duration: 1,
-            bounce: 0.3,
-          }}
-          animate={controls}
         >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.3-4.3" />
-        </motion.svg>
+          <motion.path d="m12 19-7-7 7-7" variants={pathVariants} animate={controls} />
+          <motion.path d="M19 12H5" variants={secondPathVariants} animate={controls} />
+        </svg>
       </div>
     );
   },
 );
 
-SearchIcon.displayName = 'SearchIcon';
+ArrowLeftIcon.displayName = 'ArrowLeftIcon';
 
-export { SearchIcon };
+export { ArrowLeftIcon };

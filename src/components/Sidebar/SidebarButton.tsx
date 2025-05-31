@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { CustomIcon } from '@/types';
+import { CustomIcon, CustomIconHandle } from '@/types';
 import { useRef } from 'react';
 import { SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
@@ -11,7 +11,7 @@ export type SidebarButtonProps = {
 } & React.ComponentProps<typeof SidebarMenuItem>;
 
 export const SidebarButton = ({ name, icon: Icon, onClick, className }: SidebarButtonProps) => {
-  const iconRef = useRef<any>(null);
+  const iconRef = useRef<CustomIconHandle>(null);
 
   const handleMouseEnter = () => {
     iconRef.current?.startAnimation();

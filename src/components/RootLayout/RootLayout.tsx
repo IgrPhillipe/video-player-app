@@ -20,14 +20,10 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
         <SidebarInset>
           <div className="flex max-w-[1440px] mx-auto flex-col gap-8 py-6 w-full px-8 h-full">
-            <header className="sm:grid grid-cols-12 flex grid-rows-1 h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear bg-foreground p-2 rounded-xl">
-              <div className="col-span-1" />
-
-              <div className="col-span-10">
+            <header className="flex justify-center h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear bg-foreground p-2 rounded-xl">
+              <div className="w-11/12">
                 <SearchInput />
               </div>
-
-              <div className="col-span-1" />
             </header>
 
             <AnimatePresence mode="sync">
