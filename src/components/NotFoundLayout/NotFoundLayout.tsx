@@ -5,7 +5,7 @@ import { ArrowLeftIcon } from '@/components/ui/arrow-left';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { CustomIconHandle } from '@/types';
 import { ReactLenis } from 'lenis/react';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 import { useRef } from 'react';
 
 export const NotFoundLayout = () => {

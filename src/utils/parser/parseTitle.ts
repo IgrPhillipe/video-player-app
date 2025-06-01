@@ -1,6 +1,6 @@
 import { capitalizeWords } from '../formatters';
 
-export const parseVideoTitle = (url: string): string => {
+export const parseTitle = (url: string): string => {
   const pathname = new URL(url).pathname;
   const segments = pathname.split('/');
   const slugWithId = segments.filter(Boolean).pop() ?? '';

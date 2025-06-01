@@ -1,7 +1,8 @@
 import { Video } from '@/api/videos';
 import { Switch } from '@/components/ui/switch';
 import { VideoCard } from '@/components/VideoCard';
-import { parseVideoTitle } from '@/utils/parser';
+import { capitalizeWords } from '@/utils/formatters';
+import { parseTitle } from '@/utils/parser';
 import { Dispatch, SetStateAction } from 'react';
 import { InView } from 'react-intersection-observer';
 import { PlaylistSkeleton } from '../PlaylistSkeleton';
@@ -63,10 +64,10 @@ export const Playlist = ({
                   <VideoCard
                     key={video.id}
                     href={`/video/${video.id}`}
-                    title={parseVideoTitle(video.url)}
+                    title={parseTitle(video.url)}
                     duration={video.duration}
                     thumbnail={video.image}
-                    author={video.user.name}
+                    author={capitalizeWords(video.user.name)}
                     videoUrl={previewFile?.link}
                   />
                 );

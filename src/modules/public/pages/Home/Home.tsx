@@ -3,7 +3,8 @@
 import { useGetVideos } from '@/api/videos';
 import { VideoCard } from '@/components/VideoCard';
 import { VideosSkeleton } from '@/components/VideosSkeleton';
-import { parseInfiniteData, parseVideoTitle } from '@/utils/parser';
+import { capitalizeWords } from '@/utils/formatters';
+import { parseInfiniteData, parseTitle } from '@/utils/parser';
 import { useSearchParams } from 'next/navigation';
 import { InView } from 'react-intersection-observer';
 
@@ -41,10 +42,10 @@ export const Home = () => {
               <VideoCard
                 key={video.id}
                 href={`/video/${video.id}`}
-                title={parseVideoTitle(video.url)}
+                title={parseTitle(video.url)}
                 duration={video.duration}
                 thumbnail={video.image}
-                author={video.user.name}
+                author={capitalizeWords(video.user.name)}
                 videoUrl={previewFile?.link}
               />
             );

@@ -6,7 +6,7 @@ import { FavoriteButton } from '@/components/FavoriteButton';
 import { PlayerSkeleton } from '@/components/PlayerSkeleton';
 import { Playlist } from '@/components/Playlist';
 import { ShareButton } from '@/components/ShareButton';
-import { parseInfiniteData, parseVideoTitle } from '@/utils/parser';
+import { parseInfiniteData, parseTitle } from '@/utils/parser';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
@@ -69,7 +69,7 @@ export const Video = () => {
           <section className="flex gap-4 w-full h-fit px-4 py-6 items-start">
             <header className="flex flex-col w-full">
               <h1 className="text-2xl font-bold text-accent-foreground">
-                {parseVideoTitle(data?.url as string)}
+                {parseTitle(data?.url as string)}
               </h1>
               <p className="text-sm text-accent-foreground">{data?.user?.name}</p>
             </header>

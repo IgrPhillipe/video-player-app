@@ -4,7 +4,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { MoonIcon } from '@/components/ui/moon';
 import { SunIcon } from '@/components/ui/sun';
 import { useTheme } from 'next-themes';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
@@ -20,6 +20,16 @@ export const ThemeSwitcher = () => {
   };
 
   const Icon = isDark ? SunIcon : MoonIcon;
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Suspense fallback={<></>}>

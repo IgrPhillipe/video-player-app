@@ -7,7 +7,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 import { useRef } from 'react';
 import { YoutubeIcon, type YoutubeIconHandle } from '../ui/youtube';
 

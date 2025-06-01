@@ -2,8 +2,8 @@
 
 import { cn } from '@/lib/utils';
 import { secondsToTimestamp } from '@/utils/formatters';
-import { Link } from 'next-view-transitions';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type VideoCardProps = {
@@ -99,7 +99,7 @@ export const VideoCard = ({
     <Link href={href} key={title}>
       <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
         <div
-          className="relative h-48 w-full bg-neutral-900 rounded-xl overflow-hidden group-hover:shadow-md animate"
+          className="relative h-48 w-full rounded-xl overflow-hidden group-hover:shadow-lg shadow-md animate"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
@@ -135,7 +135,7 @@ export const VideoCard = ({
         </div>
 
         <header className="flex flex-col px-2">
-          <h3 className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline">
+          <h3 className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline animate">
             {title}
           </h3>
           <p className="text-sm text-muted-foreground line-clamp-1 text-ellipsis">{author}</p>
