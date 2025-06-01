@@ -15,9 +15,13 @@ import { RocketIcon } from '@/components/ui/rocket';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
 import { SparklesIcon } from '@/components/ui/sparkles';
 import { UsersIcon } from '@/components/ui/users';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { SidebarCategories } from './SidebarCategories';
 import { SidebarMenuContent } from './SidebarMenuContent';
 import { SidebarTrigger } from './SidebarTrigger';
+
+const ALLOWED_CATEGORIES = ['nature', 'animals', 'city', 'people', 'food', 'abstract', 'universe'];
 
 const SIDEBAR_MAIN_CONTENT = [
   {
@@ -40,55 +44,68 @@ const SIDEBAR_MAIN_CONTENT = [
 const SIDEBAR_CATEGORIES = [
   {
     name: 'Natureza',
-    url: '/?category=natureza',
+    url: '/?category=nature',
     icon: CloudSunIcon,
   },
   {
     name: 'Animais',
-    url: '/?category=animais',
+    url: '/?category=animals',
     icon: BoneIcon,
   },
   {
     name: 'Cidade',
-    url: '/?category=cidade',
+    url: '/?category=city',
     icon: MapPinIcon,
   },
   {
     name: 'Pessoas',
-    url: '/?category=pessoas',
+    url: '/?category=people',
     icon: UsersIcon,
   },
   {
     name: 'Comida',
-    url: '/?category=comida',
+    url: '/?category=food',
     icon: BananaIcon,
   },
   {
     name: 'Abstrato',
-    url: '/?category=abstrato',
+    url: '/?category=abstract',
     icon: SparklesIcon,
   },
   {
     name: 'Universo',
-    url: '/?category=universo',
+    url: '/?category=universe',
     icon: RocketIcon,
   },
 ];
 
-export const SidebarMenu = ({ ...props }: React.ComponentProps<typeof Sidebar>) => (
-  <Sidebar collapsible="icon" {...props}>
-    <SidebarHeader>
-      <SidebarLogo />
-    </SidebarHeader>
+export const SidebarMenu = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-    <SidebarContent>
-      <SidebarMenuContent items={SIDEBAR_MAIN_CONTENT} />
-      <SidebarCategories categories={SIDEBAR_CATEGORIES} />
-    </SidebarContent>
+  const category = searchParams.get('category');
 
-    <SidebarFooter>
-      <ThemeSwitcher />
-      <SidebarTrigger />
-    </SidebarFooter>
-  </Sidebar>
-);
+  useEffect(() => {
+    if (category && !ALLOWED_CATEGORIES.includes(category)) {
+      router.push('/');
+    }
+  }, [category, router]);
+
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <SidebarLogo />
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarMenuContent items={SIDEBAR_MAIN_CONTENT} />
+        <SidebarCategories categories={SIDEBAR_CATEGORIES} />
+      </SidebarContent>
+
+      <SidebarFooter>
+        <ThemeSwitcher />
+        <SidebarTrigger />
+      </SidebarFooter>
+    </Sidebar>
+  );
+};
