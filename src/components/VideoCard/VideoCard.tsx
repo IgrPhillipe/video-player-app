@@ -1,25 +1,22 @@
+import { secondsToTimestamp } from '@/utils/formatters';
+import Image from 'next/image';
 import Link from 'next/link';
 
 type VideoCardProps = {
   href: string;
   title: string;
-  duration: string;
-  thumbnail: string;
   author: string;
+  duration: number;
+  thumbnail: string;
 };
 
-export const VideoCard = ({ href, title, duration, thumbnail, author }: VideoCardProps) => (
+export const VideoCard = ({ href, title, author, duration, thumbnail }: VideoCardProps) => (
   <Link href={href} key={title}>
     <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
       <div className="relative h-48 w-full bg-neutral-900 rounded-xl overflow-hidden group-hover:shadow-md animate">
-        {/* <Image
-                src="/images/placeholder.png"
-                alt="Placeholder"
-                fill
-                className="object-cover"
-              /> */}
-        <time className="px-1 text-xs bg-white/50 rounded-full absolute bottom-2 right-2">
-          {duration}
+        <Image src={thumbnail} alt={title} fill className="object-cover" />
+        <time className="px-1 text-xs bg-black/70 rounded-full absolute bottom-2 right-2">
+          {secondsToTimestamp(duration)}
         </time>
       </div>
 

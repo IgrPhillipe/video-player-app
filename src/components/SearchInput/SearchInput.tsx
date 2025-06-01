@@ -3,15 +3,17 @@
 import { Input } from '@/components/ui/input';
 import { SearchIcon } from '@/components/ui/search';
 import { CustomIconHandle } from '@/types';
+import { useRouter } from 'next/navigation';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export const SearchInput = () => {
+  const router = useRouter();
   const iconRef = useRef<CustomIconHandle>(null);
 
   const [internalSearch, setInternalSearch] = useState('');
 
-  const [search, setSearch] = useQueryState('search', {
+  const [search] = useQueryState('search', {
     defaultValue: '',
   });
 
@@ -20,7 +22,7 @@ export const SearchInput = () => {
   };
 
   const handleSubmit = () => {
-    setSearch(internalSearch);
+    router.push(`/?search=${internalSearch}`);
   };
 
   const handleMouseEnter = () => {
