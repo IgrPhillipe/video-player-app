@@ -38,12 +38,12 @@ export const SearchInput = () => {
   }, [search]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full h-12">
       <Input
         value={internalSearch}
         onChange={handleSearch}
         placeholder="Pesquisar"
-        className="focus-visible:ring-2 focus-visible:ring-neutral-400"
+        className="focus-visible:ring-2 focus-visible:ring-neutral-400 bg-foreground h-12"
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleSubmit();

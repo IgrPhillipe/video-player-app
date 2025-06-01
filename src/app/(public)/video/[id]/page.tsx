@@ -1,5 +1,6 @@
 import { getVideoById, getVideos } from '@/api/videos';
 import { Video } from '@/modules/public/pages';
+import { parseTitle } from '@/utils/parser';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { Suspense } from 'react';
 
@@ -12,14 +13,19 @@ export default async function VideoPage({ params }: VideoPageProps) {
 
   const { id } = await params;
 
+  const video = await getVideoById({ videoId: id });
+  console.log(video.url);
+  const title = parseTitle(video?.url);
+  console.log(title);
+
   await queryClient.prefetchQuery({
     queryKey: ['video-by-id', id],
     queryFn: () => getVideoById({ videoId: id }),
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['playlist-videos', undefined, id],
-    queryFn: () => getVideos({ page: 1, search: undefined }),
+    queryKey: ['playlist-videos', title, id],
+    queryFn: () => getVideos({ page: 1, search: title }),
   });
 
   const dehydratedState = dehydrate(queryClient);

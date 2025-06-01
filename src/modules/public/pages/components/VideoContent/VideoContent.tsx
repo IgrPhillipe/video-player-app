@@ -20,15 +20,17 @@ export const VideoContent = () => {
     params: { videoId: id as string },
   });
 
+  const title = data?.url ? parseTitle(data?.url) : '';
+
   const {
     data: similarVideos,
     isLoading: isSimilarVideosLoading,
     fetchNextPage,
     isFetchingNextPage: isSimilarVideosFetchingNextPage,
   } = useGetPlaylistVideos({
-    params: { search: data?.user.name, videoId: id as string },
+    params: { search: title, videoId: id as string },
     queryConfig: {
-      enabled: !!data?.user.name,
+      enabled: !!title,
     },
   });
 
@@ -68,9 +70,7 @@ export const VideoContent = () => {
           </div>
           <section className="flex gap-4 w-full h-fit px-4 py-6 items-start">
             <header className="flex flex-col w-full">
-              <h1 className="text-2xl font-bold text-accent-foreground">
-                {parseTitle(data?.url as string)}
-              </h1>
+              <h1 className="text-2xl font-bold text-accent-foreground">{title}</h1>
               <p className="text-sm text-accent-foreground">{data?.user?.name}</p>
             </header>
 

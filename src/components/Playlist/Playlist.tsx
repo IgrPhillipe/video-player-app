@@ -31,26 +31,22 @@ export const Playlist = ({
   };
 
   return (
-    <aside className="flex lg:w-1/3 w-full lg:max-w-80 flex-col gap-6 h-full">
+    <aside className="flex lg:w-1/3 w-full lg:max-w-80 flex-col gap-4 h-full">
       <section className="rounded-xl h-12 text-accent-foreground bg-foreground w-full p-4 flex justify-between items-center">
         <label htmlFor="autoplay" className="cursor-pointer">
-          Autoplay
+          Reprodução automática
         </label>
         <Switch id="autoplay" checked={autoplay} onCheckedChange={onChangeAutoplay} />
       </section>
 
       {isLoading ? (
         <section className="flex flex-col gap-2">
-          <p className="text-xs font-medium text-sidebar-foreground/70">Veja também</p>
-
           <div className="flex flex-col gap-4 p-2 flex-1 w-full">
             <PlaylistSkeleton />
           </div>
         </section>
       ) : videos.length > 0 ? (
         <section className="flex flex-col gap-2">
-          <p className="text-xs font-medium text-sidebar-foreground/70">Veja também</p>
-
           <div className="flex flex-col gap-4 p-2 flex-1 w-full">
             {isLoading ? (
               <PlaylistSkeleton />
