@@ -9,7 +9,6 @@ const kyConfig = ky.create({
 });
 
 const authorizedRequest: BeforeRequestHook = async (request) => {
-  console.log('VIDEOS_API_KEY', VIDEOS_API_KEY);
   request.headers.set('Authorization', VIDEOS_API_KEY as string);
 };
 

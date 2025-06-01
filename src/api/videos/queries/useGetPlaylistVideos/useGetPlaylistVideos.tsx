@@ -3,15 +3,15 @@ import { useInfiniteQueryApi } from '@/api/common/useInfiniteQueryApi';
 import { getVideos } from '@/api/videos/requests';
 import { GetVideosParams, GetVideosResponse } from '@/api/videos/types';
 
-type UseGetPlaylistVideosProps = {
+type UseGetVideosProps = {
   params?: GetVideosParams;
   queryConfig?: DefaultInfiniteQueryConfig<GetVideosResponse>;
 };
 
-export const useGetPlaylistVideos = ({ params, queryConfig }: UseGetPlaylistVideosProps) =>
+export const useGetVideos = ({ params, queryConfig }: UseGetVideosProps) =>
   useInfiniteQueryApi<GetVideosResponse, GetVideosParams>({
-    queryKey: ['playlist-videos', params?.search],
+    ...queryConfig,
+    queryKey: ['videos', params?.search],
     params,
     queryFn: getVideos,
-    queryConfig,
   });

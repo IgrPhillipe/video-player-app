@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 'use client';
 
-import { useGetVideos } from '@/api/videos';
-import { useGetVideoById } from '@/api/videos/queries/useGetVideoById';
+import { useGetPlaylistVideos, useGetVideoById } from '@/api/videos';
 import { FavoriteButton } from '@/components/FavoriteButton';
+import { PlayerSkeleton } from '@/components/PlayerSkeleton';
 import { Playlist } from '@/components/Playlist';
 import { ShareButton } from '@/components/ShareButton';
 import { parseInfiniteData, parseVideoTitle } from '@/utils/parser';
@@ -24,8 +24,8 @@ export const Video = () => {
     data: similarVideos,
     isLoading: isSimilarVideosLoading,
     fetchNextPage,
-    isFetching: isSimilarVideosFetching,
-  } = useGetVideos({
+    isFetchingNextPage: isSimilarVideosFetchingNextPage,
+  } = useGetPlaylistVideos({
     params: { search: data?.user.name },
     queryConfig: {
       enabled: !!data?.user.name,
@@ -44,47 +44,50 @@ export const Video = () => {
     }
   }, [autoplay, router, filteredVideos]);
 
-  if (!data) {
-    return <div>Video não encontrado</div>;
-  }
+  const isSafari =
+    typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   return (
     <main className="flex lg:flex-row flex-col gap-8 h-full w-full">
-      <article className="flex flex-col lg:sticky top-6 w-full bg-foreground rounded-xl h-fit">
-        <div className="flex w-full rounded-xl overflow-hidden aspect-video bg-blue-200 shadow-sm">
-          <video
-            key={file?.link}
-            src={file?.link}
-            poster={data?.image}
-            controls
-            autoPlay
-            onEnded={handleNextVideo}
-            className="rounded-xl w-full h-auto max-h-[80vh] object-cover"
-          >
-            <source src={file?.link} type="video/mp4" />
-          </video>
-        </div>
-        <section className="flex gap-4 w-full h-fit px-4 py-6 items-start">
-          <header className="flex flex-col w-full">
-            <h1 className="text-2xl font-bold text-accent-foreground">
-              {parseVideoTitle(data?.url)}
-            </h1>
-            <p className="text-sm text-accent-foreground">{data?.user?.name}</p>
-          </header>
+      {isLoading ? (
+        <PlayerSkeleton />
+      ) : (
+        <article className="flex flex-col lg:sticky top-6 w-full bg-foreground rounded-xl h-fit">
+          <div className="flex w-full rounded-xl overflow-hidden aspect-video bg-blue-200 shadow-sm">
+            <video
+              key={file?.link}
+              src={file?.link}
+              poster={data?.image}
+              controls
+              autoPlay={isSafari ? false : true}
+              onEnded={handleNextVideo}
+              className="rounded-xl w-full h-auto max-h-[80vh] object-cover"
+            >
+              <source src={file?.link} type="video/mp4" />
+            </video>
+          </div>
+          <section className="flex gap-4 w-full h-fit px-4 py-6 items-start">
+            <header className="flex flex-col w-full">
+              <h1 className="text-2xl font-bold text-accent-foreground">
+                {parseVideoTitle(data?.url as string)}
+              </h1>
+              <p className="text-sm text-accent-foreground">{data?.user?.name}</p>
+            </header>
 
-          <nav className="flex gap-2 w-fit">
-            <FavoriteButton />
-            <ShareButton />
-          </nav>
-        </section>
-      </article>
+            <nav className="flex gap-2 w-fit">
+              <FavoriteButton />
+              <ShareButton />
+            </nav>
+          </section>
+        </article>
+      )}
 
       <Playlist
         autoplay={autoplay}
         onChangeAutoplay={setAutoplay}
         videos={filteredVideos}
         isLoading={isSimilarVideosLoading}
-        isFetching={isSimilarVideosFetching}
+        isFetchingNextPage={isSimilarVideosFetchingNextPage}
         fetchNextPage={fetchNextPage}
       />
     </main>

@@ -53,6 +53,7 @@ export const SearchInput = () => {
       <button
         onClick={handleSubmit}
         onMouseEnter={handleMouseEnter}
+        disabled={!internalSearch}
         onMouseLeave={handleMouseLeave}
         className="absolute inset-y-0 end-0 w-12 flex items-center justify-center h-full dark:bg-accent bg-neutral-300 rounded-r-lg px-2 text-muted-foreground"
       >

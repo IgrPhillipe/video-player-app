@@ -32,6 +32,7 @@ export function SidebarLogo() {
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            isActive={false}
           >
             <div
               className={cn(

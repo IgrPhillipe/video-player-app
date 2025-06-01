@@ -28,7 +28,7 @@ export const SidebarButton = ({ name, icon: Icon, onClick, className }: SidebarB
       onClick={onClick}
       className={cn('cursor-pointer list-none', className)}
     >
-      <SidebarMenuButton asChild>
+      <SidebarMenuButton asChild tooltip={name}>
         <div className="flex items-center gap-2">
           <Icon ref={iconRef} size={16} className="fill-transparent" />
           <span>{name}</span>

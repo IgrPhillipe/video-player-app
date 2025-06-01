@@ -1,6 +1,6 @@
 'use client';
 
-import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { CustomIcon, CustomIconHandle } from '@/types';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -13,6 +13,7 @@ export type SidebarItemProps = {
 };
 
 export const SidebarItem = ({ name, url, icon: Icon }: SidebarItemProps) => {
+  const { toggleSidebar, isMobile } = useSidebar();
   const iconRef = useRef<CustomIconHandle>(null);
 
   const pathname = usePathname();
@@ -34,8 +35,8 @@ export const SidebarItem = ({ name, url, icon: Icon }: SidebarItemProps) => {
 
   return (
     <SidebarMenuItem onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <SidebarMenuButton asChild isActive={isActive}>
-        <Link prefetch href={url}>
+      <SidebarMenuButton asChild isActive={isActive} tooltip={name}>
+        <Link prefetch href={url} onClick={isMobile ? toggleSidebar : undefined}>
           <Icon ref={iconRef} size={16} />
           <span>{name}</span>
         </Link>
