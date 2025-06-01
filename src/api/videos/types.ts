@@ -47,3 +47,43 @@ export type GetVideoByIdParams = {
 };
 
 export type GetVideoByIdResponse = Video;
+
+export type GetIsVideoFavoriteParams = {
+  videoId: number;
+};
+
+export type GetIsVideoFavoriteResponse = boolean;
+
+export type AddFavoriteParams = {
+  video: Video;
+};
+
+export type AddFavoriteResponse = void;
+
+export type RemoveFavoriteParams = {
+  videoId: number;
+};
+
+export type RemoveFavoriteResponse = void;
+
+export type AddWatchedParams = {
+  video: Video;
+};
+
+export type AddWatchedResponse = void;
+
+export type GetFavoritesParams = {
+  userId: string;
+  search?: string;
+  fromVideoId?: number;
+};
+
+export type GetFavoritesResponse = PaginatedResponse;
+
+export type GetWatchedParams = {
+  userId: string;
+  search?: string;
+  fromVideoId?: number;
+};
+
+export type GetWatchedResponse = PaginatedResponse;

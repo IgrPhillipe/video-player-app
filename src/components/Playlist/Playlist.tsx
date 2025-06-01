@@ -3,6 +3,7 @@ import { Switch } from '@/components/ui/switch';
 import { VideoCard } from '@/components/VideoCard';
 import { capitalizeWords } from '@/utils/formatters';
 import { parseTitle } from '@/utils/parser';
+import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { InView } from 'react-intersection-observer';
 import { PlaylistSkeleton } from '../PlaylistSkeleton';
@@ -24,16 +25,20 @@ export const Playlist = ({
   isFetchingNextPage,
   fetchNextPage,
 }: PlaylistProps) => {
+  const pathname = usePathname();
+
   const handleChangeLoader = (inView: boolean) => {
     if (inView && fetchNextPage) {
       fetchNextPage();
     }
   };
 
+  const isFavoritesPage = pathname.startsWith('/favoritos');
+  const isWatchedPage = pathname.startsWith('/assistidos');
   return (
     <aside className="flex lg:w-1/3 w-full lg:max-w-80 flex-col gap-4 h-full">
       <section className="rounded-xl h-12 text-accent-foreground bg-foreground w-full p-4 flex justify-between items-center">
-        <label htmlFor="autoplay" className="cursor-pointer">
+        <label htmlFor="autoplay" className="cursor-pointer text-xs">
           Reprodução automática
         </label>
         <Switch id="autoplay" checked={autoplay} onCheckedChange={onChangeAutoplay} />
@@ -59,7 +64,13 @@ export const Playlist = ({
                 return (
                   <VideoCard
                     key={video.id}
-                    href={`/video/${video.id}`}
+                    href={
+                      isFavoritesPage
+                        ? `/favoritos/video/${video.id}`
+                        : isWatchedPage
+                          ? `/assistidos/video/${video.id}`
+                          : `/video/${video.id}`
+                    }
                     title={parseTitle(video.url)}
                     duration={video.duration}
                     thumbnail={video.image}

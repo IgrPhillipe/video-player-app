@@ -21,6 +21,7 @@ export const VideoCard = memo(
     const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [internalDuration, setInternalDuration] = useState(duration);
+    const titleRef = useRef<HTMLHeadingElement>(null);
 
     const isHoveredRef = useRef(false);
 
@@ -90,7 +91,7 @@ export const VideoCard = memo(
     }, [duration]);
 
     return (
-      <Link href={href} key={title}>
+      <Link href={href} key={title} className="block">
         <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
           <div
             className="relative h-48 w-full rounded-xl overflow-hidden group-hover:shadow-lg shadow-md animate"
@@ -132,7 +133,10 @@ export const VideoCard = memo(
           </div>
 
           <header className="flex flex-col px-2">
-            <h3 className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline animate">
+            <h3
+              ref={titleRef}
+              className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline animate"
+            >
               {title}
             </h3>
             <p className="text-sm text-muted-foreground line-clamp-1 text-ellipsis">{author}</p>

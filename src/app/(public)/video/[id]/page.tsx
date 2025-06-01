@@ -1,7 +1,9 @@
 import { getVideoById, getVideos } from '@/api/videos';
+import { getQueryClient } from '@/lib/react-query';
 import { Video } from '@/modules/public/pages';
 import { parseTitle } from '@/utils/parser';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { dehydrate } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 type VideoPageProps = {
@@ -9,14 +11,17 @@ type VideoPageProps = {
 };
 
 export default async function VideoPage({ params }: VideoPageProps) {
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient();
 
   const { id } = await params;
 
   const video = await getVideoById({ videoId: id });
-  console.log(video.url);
+
+  if (!video) {
+    return notFound();
+  }
+
   const title = parseTitle(video?.url);
-  console.log(title);
 
   await queryClient.prefetchQuery({
     queryKey: ['video-by-id', id],

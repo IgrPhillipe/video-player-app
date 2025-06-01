@@ -2,6 +2,7 @@ import {
   InfiniteData,
   QueryKey,
   UseInfiniteQueryOptions,
+  UseMutationOptions,
   UseQueryOptions,
 } from '@tanstack/react-query';
 
@@ -23,3 +24,10 @@ export type DefaultQueryConfig<TData> = Omit<
 export type UseQueryFnParams<T = void> = {
   params?: T;
 };
+
+export type DefaultMutationConfig<TData, TBody> = Omit<
+  UseMutationOptions<TData, Error, TBody>,
+  'mutationFn'
+>;
+
+export type MutationFn<TData, TBody> = (params: TBody) => Promise<TData>;

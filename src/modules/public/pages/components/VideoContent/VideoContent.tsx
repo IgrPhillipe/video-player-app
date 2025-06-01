@@ -2,23 +2,28 @@
 'use client';
 
 import { useGetPlaylistVideos, useGetVideoById } from '@/api/videos';
+import { useAddWatched } from '@/api/videos/mutations';
 import { FavoriteButton } from '@/components/FavoriteButton';
 import { PlayerSkeleton } from '@/components/PlayerSkeleton';
 import { Playlist } from '@/components/Playlist';
 import { ShareButton } from '@/components/ShareButton';
 import { parseInfiniteData, parseTitle } from '@/utils/parser';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const VideoContent = () => {
   const router = useRouter();
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const [autoplay, setAutoplay] = useState(false);
 
   const { data, isLoading } = useGetVideoById({
     params: { videoId: id as string },
   });
+
+  const { mutateAsync: addToWatched } = useAddWatched({});
 
   const title = data?.url ? parseTitle(data?.url) : '';
 
@@ -49,9 +54,20 @@ export const VideoContent = () => {
   const isSafari =
     typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
+  useEffect(() => {
+    if (data)
+      addToWatched(
+        { video: data },
+        {
+          onSuccess: async () =>
+            await queryClient.invalidateQueries({ queryKey: ['watched-videos'] }),
+        },
+      );
+  }, [data]);
+
   return (
     <main className="flex lg:flex-row flex-col gap-8 h-full w-full">
-      {isLoading ? (
+      {isLoading || !data ? (
         <PlayerSkeleton />
       ) : (
         <article className="flex flex-col lg:sticky top-6 w-full bg-foreground rounded-xl h-fit">
@@ -75,7 +91,7 @@ export const VideoContent = () => {
             </header>
 
             <nav className="flex gap-2 w-fit">
-              <FavoriteButton />
+              <FavoriteButton video={data} />
               <ShareButton />
             </nav>
           </section>
