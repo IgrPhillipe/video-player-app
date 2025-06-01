@@ -91,8 +91,16 @@ export const VideoCard = memo(
     }, [duration]);
 
     return (
-      <Link href={href} key={title} className="block">
-        <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
+      <Link
+        href={href}
+        key={title}
+        className="block"
+        aria-label={`Assistir vídeo: ${title} por ${author}`}
+      >
+        <article
+          className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full"
+          aria-labelledby={`video-title-${title}`}
+        >
           <div
             className="relative h-48 w-full rounded-xl overflow-hidden group-hover:shadow-lg shadow-md animate"
             onMouseEnter={handleMouseEnter}
@@ -102,7 +110,7 @@ export const VideoCard = memo(
           >
             <Image
               src={thumbnail}
-              alt={title}
+              alt={`Thumbnail do vídeo: ${title}`}
               fill
               loading="lazy"
               className={cn(
@@ -118,6 +126,7 @@ export const VideoCard = memo(
                 muted
                 loop
                 playsInline
+                aria-hidden={!showVideo}
                 className={cn(
                   'absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300',
                   showVideo ? 'opacity-100' : 'opacity-0',
@@ -125,7 +134,11 @@ export const VideoCard = memo(
               />
             )}
 
-            <time className="px-1 text-xs bg-black/70 rounded-full absolute bottom-2 right-2 text-white z-10">
+            <time
+              className="px-1 text-xs bg-black/70 rounded-full absolute bottom-2 right-2 text-white z-10"
+              dateTime={`PT${internalDuration || duration}S`}
+              aria-label={`Duração do vídeo: ${secondsToTimestamp(internalDuration || duration)}`}
+            >
               {internalDuration
                 ? secondsToTimestamp(internalDuration)
                 : secondsToTimestamp(duration)}
@@ -135,11 +148,17 @@ export const VideoCard = memo(
           <header className="flex flex-col px-2">
             <h3
               ref={titleRef}
+              id={`video-title-${title}`}
               className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline animate"
             >
               {title}
             </h3>
-            <p className="text-sm text-muted-foreground line-clamp-1 text-ellipsis">{author}</p>
+            <p
+              className="text-sm text-muted-foreground line-clamp-1 text-ellipsis"
+              aria-label={`Autor: ${author}`}
+            >
+              {author}
+            </p>
           </header>
         </article>
       </Link>

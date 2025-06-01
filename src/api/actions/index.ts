@@ -112,14 +112,11 @@ export const addToFavorites = async (video: Video): Promise<void> => {
   );
 };
 
-export const removeFromFavorites = async (videoId: string): Promise<void> => {
+export const removeFromFavorites = async (videoId: number): Promise<void> => {
   const userId = await getUserId();
   const collection = await getUserCollection();
 
-  await collection.updateOne(
-    { _id: userId },
-    { $pull: { favoriteVideos: { id: videoId as unknown as number } } },
-  );
+  await collection.updateOne({ _id: userId }, { $pull: { favoriteVideos: { id: videoId } } });
 };
 
 export const getFavoriteVideos = async ({
