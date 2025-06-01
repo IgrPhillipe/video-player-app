@@ -10,7 +10,7 @@ type UseGetPlaylistVideosProps = {
 
 export const useGetPlaylistVideos = ({ params, queryConfig }: UseGetPlaylistVideosProps) =>
   useInfiniteQueryApi<GetVideosResponse, GetVideosParams>({
-    queryKey: ['playlist-videos', params?.search],
+    queryKey: ['playlist-videos', params?.search, params?.videoId],
     params,
     queryFn: getVideos,
     queryConfig,

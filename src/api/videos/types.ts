@@ -37,6 +37,7 @@ export type Video = {
 
 export type GetVideosParams = {
   search?: string;
+  videoId?: string;
 };
 
 export type GetVideosResponse = PaginatedResponse;

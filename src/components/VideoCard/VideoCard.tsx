@@ -109,6 +109,7 @@ export const VideoCard = ({
             src={thumbnail}
             alt={title}
             fill
+            loading="lazy"
             className={cn(
               'object-cover transition-opacity duration-300',
               showVideo ? 'opacity-0' : 'opacity-100',

@@ -1,8 +1,7 @@
 'use client';
 
-import { QueryClientProvider, QueryClientProviderProps } from '@tanstack/react-query';
-
 import { getQueryClient } from '@/lib/react-query';
+import { QueryClientProvider, QueryClientProviderProps } from '@tanstack/react-query';
 
 export type TanstackProviderProps = Omit<QueryClientProviderProps, 'client'>;
 
