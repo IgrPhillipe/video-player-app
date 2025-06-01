@@ -1,10 +1,10 @@
 'use client';
 
+import { Sidebar } from '@/components/Sidebar';
 import { MoonIcon } from '@/components/ui/moon';
 import { SunIcon } from '@/components/ui/sun';
 import { useTheme } from 'next-themes';
 import { Suspense } from 'react';
-import { SidebarButton } from '../Sidebar/SidebarButton';
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
@@ -23,7 +23,7 @@ export const ThemeSwitcher = () => {
 
   return (
     <Suspense fallback={<></>}>
-      <SidebarButton name={isDark ? 'Claro' : 'Escuro'} icon={Icon} onClick={handleThemeChange} />
+      <Sidebar.Button name={isDark ? 'Claro' : 'Escuro'} icon={Icon} onClick={handleThemeChange} />
     </Suspense>
   );
 };

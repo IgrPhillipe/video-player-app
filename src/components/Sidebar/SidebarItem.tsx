@@ -1,10 +1,10 @@
 'use client';
 
+import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { CustomIcon, CustomIconHandle } from '@/types';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRef } from 'react';
-import { SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
 export type SidebarItemProps = {
   name: string;

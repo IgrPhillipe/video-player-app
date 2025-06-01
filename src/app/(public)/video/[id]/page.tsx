@@ -1,5 +1,3 @@
-'use client';
-
 import { Video } from '@/modules/public/pages';
 import { Suspense } from 'react';
 

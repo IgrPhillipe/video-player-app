@@ -1,9 +1,9 @@
 'use client';
 
+import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { CustomIcon, CustomIconHandle } from '@/types';
 import { useRef } from 'react';
-import { SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
 export type SidebarButtonProps = {
   name: string;

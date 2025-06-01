@@ -10,7 +10,7 @@ type VideoCardProps = {
 
 export const VideoCard = ({ href, title, duration, thumbnail, author }: VideoCardProps) => (
   <Link href={href} key={title}>
-    <div className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
+    <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
       <div className="relative h-48 w-full bg-neutral-900 rounded-xl overflow-hidden group-hover:shadow-md animate">
         {/* <Image
                 src="/images/placeholder.png"
@@ -18,17 +18,17 @@ export const VideoCard = ({ href, title, duration, thumbnail, author }: VideoCar
                 fill
                 className="object-cover"
               /> */}
-        <div className="px-1 text-xs bg-white/50 rounded-full absolute bottom-2 right-2">
-          <small>{duration}</small>
-        </div>
+        <time className="px-1 text-xs bg-white/50 rounded-full absolute bottom-2 right-2">
+          {duration}
+        </time>
       </div>
 
-      <div className="flex flex-col px-2">
-        <p className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline">
+      <header className="flex flex-col px-2">
+        <h3 className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline">
           {title}
-        </p>
+        </h3>
         <p className="text-sm text-muted-foreground line-clamp-1 text-ellipsis">{author}</p>
-      </div>
-    </div>
+      </header>
+    </article>
   </Link>
 );
