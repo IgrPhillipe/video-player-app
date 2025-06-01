@@ -12,9 +12,9 @@ export const ResponsiveSidebarTrigger = () => {
   return (
     <button
       onClick={toggleSidebar}
-      className="flex h-10 w-10 items-center justify-center fixed bottom-4 left-4 aspect-square rounded-xl dark:bg-neutral-900 bg-neutral-100 shadow-md text-accent-foreground"
+      className="flex h-12 w-12 items-center justify-center fixed bottom-4 left-4 aspect-square rounded-xl dark:bg-neutral-900 bg-neutral-100 shadow-md text-accent-foreground"
     >
-      <Icon size={16} />
+      <Icon size={26} />
     </button>
   );
 };

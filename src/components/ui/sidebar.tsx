@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { cn } from '@/lib/utils';
 import { ResponsiveSidebarTrigger } from '../Sidebar/ResponsiveSidebarTrigger';
 import { PanelLeftCloseIcon } from './panel-left-close';
