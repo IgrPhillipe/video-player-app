@@ -2,9 +2,9 @@ import '../styles/globals.css';
 
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
-import { ReactNode } from 'react';
 
 import { GlobalProvider } from '@/providers';
+import { RootLayoutProps } from '@/types';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -16,16 +16,12 @@ export const metadata: Metadata = {
   description: 'Video Player App',
 };
 
-type RootLayoutProps = Readonly<{
-  children: ReactNode;
-}>;
-
-const RootLayout = ({ children }: RootLayoutProps) => (
-  <html lang="pt_BR" className={fontSans.variable}>
+const Root = ({ children }: RootLayoutProps) => (
+  <html lang="pt_BR" className={fontSans.variable} suppressHydrationWarning>
     <body>
       <GlobalProvider>{children}</GlobalProvider>
     </body>
   </html>
 );
 
-export default RootLayout;
+export default Root;
