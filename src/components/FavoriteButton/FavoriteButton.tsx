@@ -1,12 +1,9 @@
 import { Video } from '@/api/videos';
-import { useAddFavorite, useRemoveFavorite } from '@/api/videos/mutations';
-import { useGetIsVideoFavorite } from '@/api/videos/queries/useGetIsVideoFavorite';
 import { CustomHeartIcon } from '@/components/ui/custom-heart';
+import { useFavorite } from '@/hooks/useFavorite';
 import { cn } from '@/lib/utils';
 import { CustomIconHandle } from '@/types';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRef } from 'react';
-import { toast } from 'sonner';
 
 type FavoriteButtonProps = {
   video: Video;
@@ -14,14 +11,7 @@ type FavoriteButtonProps = {
 
 export const FavoriteButton = ({ video }: FavoriteButtonProps) => {
   const iconRef = useRef<CustomIconHandle>(null);
-  const queryClient = useQueryClient();
-
-  const { data: isFavorite } = useGetIsVideoFavorite({
-    params: { videoId: video.id },
-  });
-
-  const { mutate: addToFavorites } = useAddFavorite({});
-  const { mutate: removeFromFavorites } = useRemoveFavorite({});
+  const { isFavorite, handleFavorite, handleUnfavorite } = useFavorite(video);
 
   const handleMouseEnter = () => {
     iconRef.current?.startAnimation();
@@ -29,44 +19,6 @@ export const FavoriteButton = ({ video }: FavoriteButtonProps) => {
 
   const handleMouseLeave = () => {
     iconRef.current?.stopAnimation();
-  };
-
-  const handleFavorite = () => {
-    addToFavorites(
-      { video },
-      {
-        onSuccess: async () => {
-          toast.success('Vídeo adicionado aos favoritos');
-          await queryClient.invalidateQueries({
-            queryKey: ['is-video-favorite'],
-          });
-          await queryClient.invalidateQueries({
-            queryKey: ['favorite-videos'],
-            refetchType: 'all',
-          });
-        },
-        onError: () => toast.error('Erro ao adicionar vídeo aos favoritos'),
-      },
-    );
-  };
-
-  const handleUnfavorite = () => {
-    removeFromFavorites(
-      { videoId: video.id },
-      {
-        onSuccess: async () => {
-          toast.success('Vídeo removido dos favoritos');
-          await queryClient.invalidateQueries({
-            queryKey: ['is-video-favorite'],
-          });
-          await queryClient.invalidateQueries({
-            queryKey: ['favorite-videos'],
-            refetchType: 'all',
-          });
-        },
-        onError: () => toast.error('Erro ao remover vídeo dos favoritos'),
-      },
-    );
   };
 
   return (

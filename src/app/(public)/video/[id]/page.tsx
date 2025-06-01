@@ -1,8 +1,7 @@
 import { getVideoById, getVideos } from '@/api/videos';
-import { getQueryClient } from '@/lib/react-query';
 import { Video } from '@/modules/public/pages';
 import { parseTitle } from '@/utils/parser';
-import { dehydrate } from '@tanstack/react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -11,7 +10,7 @@ type VideoPageProps = {
 };
 
 export default async function VideoPage({ params }: VideoPageProps) {
-  const queryClient = getQueryClient();
+  const queryClient = new QueryClient();
 
   const { id } = await params;
 

@@ -1,8 +1,7 @@
 import { getFavoriteVideos, getUserId } from '@/api/actions';
 import { getVideoById } from '@/api/videos';
-import { getQueryClient } from '@/lib/react-query';
 import { FavoritesVideo } from '@/modules/public/pages';
-import { dehydrate } from '@tanstack/react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -11,7 +10,7 @@ type FavoritesVideoPageProps = {
 };
 
 export default async function FavoritesVideoPage({ params }: FavoritesVideoPageProps) {
-  const queryClient = getQueryClient();
+  const queryClient = new QueryClient();
 
   const { id } = await params;
 

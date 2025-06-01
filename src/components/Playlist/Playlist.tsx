@@ -2,7 +2,6 @@ import { Video } from '@/api/videos';
 import { Switch } from '@/components/ui/switch';
 import { VideoCard } from '@/components/VideoCard';
 import { capitalizeWords } from '@/utils/formatters';
-import { parseTitle } from '@/utils/parser';
 import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { InView } from 'react-intersection-observer';
@@ -71,7 +70,7 @@ export const Playlist = ({
                           ? `/assistidos/video/${video.id}`
                           : `/video/${video.id}`
                     }
-                    title={parseTitle(video.url)}
+                    title={video.url}
                     duration={video.duration}
                     thumbnail={video.image}
                     author={capitalizeWords(video.user.name)}

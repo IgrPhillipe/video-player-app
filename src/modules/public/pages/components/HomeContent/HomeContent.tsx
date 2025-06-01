@@ -5,7 +5,7 @@ import { VideoCard } from '@/components/VideoCard';
 import { VideosSkeleton } from '@/components/VideosSkeleton';
 import { ALLOWED_CATEGORIES_MAP } from '@/config';
 import { capitalizeWords } from '@/utils/formatters';
-import { parseInfiniteData, parseTitle } from '@/utils/parser';
+import { parseInfiniteData } from '@/utils/parser';
 import { useSearchParams } from 'next/navigation';
 import { Fragment } from 'react';
 import { InView } from 'react-intersection-observer';
@@ -66,7 +66,7 @@ export const HomeContent = () => {
                 <VideoCard
                   key={video.id}
                   href={`/video/${video.id}`}
-                  title={parseTitle(video.url)}
+                  title={video.url}
                   duration={video.duration}
                   thumbnail={video.image}
                   author={capitalizeWords(video.user.name)}

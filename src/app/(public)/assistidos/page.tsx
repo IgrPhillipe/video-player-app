@@ -1,11 +1,10 @@
 import { getUserId, getWatchedVideos } from '@/api/actions';
-import { getQueryClient } from '@/lib/react-query';
 import { Watched } from '@/modules/public/pages';
-import { dehydrate } from '@tanstack/react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { Suspense } from 'react';
 
 export default async function WatchedPage() {
-  const queryClient = getQueryClient();
+  const queryClient = new QueryClient();
 
   const userId = await getUserId();
 
