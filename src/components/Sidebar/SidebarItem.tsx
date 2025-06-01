@@ -2,7 +2,7 @@
 
 import { SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { CustomIcon, CustomIconHandle } from '@/types';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRef } from 'react';
 

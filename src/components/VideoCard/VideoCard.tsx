@@ -2,8 +2,8 @@
 
 import { cn } from '@/lib/utils';
 import { secondsToTimestamp } from '@/utils/formatters';
+import { Link } from 'next-view-transitions';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type VideoCardProps = {

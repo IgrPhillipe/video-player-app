@@ -1,3 +1,5 @@
+import { ViewTransitions } from 'next-view-transitions';
+
 import '../styles/globals.css';
 
 import type { Metadata } from 'next';
@@ -17,11 +19,13 @@ export const metadata: Metadata = {
 };
 
 const Root = ({ children }: RootLayoutProps) => (
-  <html lang="pt_BR" className={fontSans.variable} suppressHydrationWarning>
-    <body>
-      <GlobalProvider>{children}</GlobalProvider>
-    </body>
-  </html>
+  <ViewTransitions>
+    <html lang="pt_BR" className={fontSans.variable} suppressHydrationWarning>
+      <body>
+        <GlobalProvider>{children}</GlobalProvider>
+      </body>
+    </html>
+  </ViewTransitions>
 );
 
 export default Root;
