@@ -1,10 +1,10 @@
 # 📺 Plataforma de Visualização de Vídeos
 
-Este projeto é uma plataforma de vídeos desenvolvida com foco em performance, componentização, boas práticas e experiência do usuário.
+Este projeto é uma plataforma de vídeos desenvolvida com foco em performance, componentização, boas práticas e experiência do usuário
 
 ## 📌 Sobre o Projeto
 
-Esta plataforma foi desenvolvida com Next.js 15 App Router, utilizando React, TypeScript e Tailwind CSS, com o objetivo de entregar uma experiência fluida e performática na visualização de vídeos. A aplicação permite aos usuários explorar, assistir e gerenciar vídeos com uma interface intuitiva e responsiva.
+Esta plataforma foi desenvolvida com Next.js 15 App Router, utilizando React, TypeScript e Tailwind CSS, com o objetivo de entregar uma experiência fluida e performática na visualização de vídeos. A aplicação permite aos usuários explorar, assistir e gerenciar vídeos com uma interface intuitiva e responsiva
 
 ## 🚀 Como Rodar o Projeto
 
@@ -31,9 +31,10 @@ yarn install
 Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 ```env
 NEXT_PUBLIC_VIDEOS_API_KEY=sua_chave_api
-NEXT_PUBLIC_VIDEOS_API_URL=https://api.pexels.com/
+NEXT_PUBLIC_VIDEOS_API_URL=url_da_api
 MONGODB_URI=sua_uri_mongodb
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_DB_NAME=nome_do_banco
 ```
 
 4. Inicie o servidor de desenvolvimento:
