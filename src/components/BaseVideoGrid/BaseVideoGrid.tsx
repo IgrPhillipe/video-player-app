@@ -39,7 +39,11 @@ export const BaseVideoGrid = ({
         ) : (
           <Fragment>
             {items.map((video) => (
-              <VideoCard key={video.id} href={`${cardLinkBasePath}/${video.id}`} video={video} />
+              <VideoCard
+                key={`${video.id}-${video.url}`}
+                href={`${cardLinkBasePath}/${video.id}`}
+                video={video}
+              />
             ))}
 
             {children}

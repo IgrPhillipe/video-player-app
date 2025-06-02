@@ -6,6 +6,7 @@ import { InfiniteScrollObserver } from '@/components/InfiniteScrollObserver';
 import { VideosSkeleton } from '@/components/Skeletons';
 import { parseInfiniteData } from '@/utils/parser';
 import { useSearchParams } from 'next/navigation';
+import { useMemo } from 'react';
 
 type WatchedContentProps = {
   userId: string;
@@ -23,7 +24,7 @@ export const WatchedContent = ({ userId }: WatchedContentProps) => {
     },
   });
 
-  const videos = parseInfiniteData(data).reverse();
+  const videos = useMemo(() => parseInfiniteData(data).reverse(), [data]);
 
   return (
     <BaseVideoGrid

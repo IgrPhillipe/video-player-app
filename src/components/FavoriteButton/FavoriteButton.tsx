@@ -11,6 +11,7 @@ type FavoriteButtonProps = {
 
 export const FavoriteButton = ({ video }: FavoriteButtonProps) => {
   const iconRef = useRef<CustomIconHandle>(null);
+
   const { isFavorite, handleFavorite, handleUnfavorite } = useFavorite(video);
 
   const handleMouseEnter = () => {

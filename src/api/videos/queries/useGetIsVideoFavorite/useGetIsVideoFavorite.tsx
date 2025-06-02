@@ -8,7 +8,7 @@ type UseGetIsVideoFavoriteProps = {
   queryConfig?: DefaultQueryConfig<GetIsVideoFavoriteResponse>;
 };
 
-export const generateGetIsVideoFavoriteQueryKey = (params: Partial<GetIsVideoFavoriteParams>) => [
+export const generateGetIsVideoFavoriteQueryKey = (params: GetIsVideoFavoriteParams) => [
   'is-video-favorite',
   params.videoId,
 ];

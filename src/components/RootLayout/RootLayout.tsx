@@ -8,10 +8,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ReactLenis } from 'lenis/react';
 import { usePathname } from 'next/navigation';
 
+const TRANSITION = { duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] };
+
+const VARIANTS = {
+  initial: {
+    y: 60,
+    opacity: 0,
+    transition: TRANSITION,
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: TRANSITION,
+  },
+};
+
 export const RootLayout = ({ children }: RootLayoutProps) => {
   const pathname = usePathname();
-
-  const TRANSITION = { duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] };
 
   return (
     <SidebarProvider>
@@ -26,17 +39,9 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
 
             <AnimatePresence mode="sync">
               <motion.div
-                // initial={{
-                //   y: 60,
-                //   opacity: 0,
-                //   transition: TRANSITION,
-                // }}
-                // animate={{
-                //   y: 0,
-                //   opacity: 1,
-                //   transition: TRANSITION,
-                // }}
-                // exit={{ opacity: 0 }}
+                initial="initial"
+                animate="animate"
+                variants={VARIANTS}
                 key={pathname}
                 className="flex flex-1 flex-col gap-4 h-full w-full relative"
               >

@@ -1,9 +1,7 @@
 import { getUserId, getWatchedVideos } from '@/api/actions';
 import { generateGetWatchedQueryKey } from '@/api/videos';
-import { VideosSkeleton } from '@/components/Skeletons';
 import { Watched } from '@/modules/public/pages';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { Suspense } from 'react';
 
 export default async function WatchedPage() {
   const queryClient = new QueryClient();
@@ -21,9 +19,5 @@ export default async function WatchedPage() {
 
   const dehydratedState = dehydrate(queryClient);
 
-  return (
-    <Suspense fallback={<VideosSkeleton />}>
-      <Watched dehydratedState={dehydratedState} userId={userId} />
-    </Suspense>
-  );
+  return <Watched dehydratedState={dehydratedState} userId={userId} />;
 }

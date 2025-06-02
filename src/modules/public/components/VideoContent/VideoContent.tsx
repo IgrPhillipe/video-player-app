@@ -1,6 +1,6 @@
 'use client';
 
-import { generateGetWatchedQueryKey, useGetPlaylistVideos, Video } from '@/api/videos';
+import { useGetPlaylistVideos, Video } from '@/api/videos';
 import { useAddWatched } from '@/api/videos/mutations';
 import { BaseVideoContent } from '@/components/BaseVideoContent';
 import { parseTitle } from '@/utils/parser';
@@ -21,8 +21,7 @@ export const VideoContent = ({ userId, video }: VideoContentProps) => {
   const { mutateAsync } = useAddWatched({
     mutationConfig: {
       onSuccess: async () => {
-        const queryKey = generateGetWatchedQueryKey({ userId });
-        await queryClient.invalidateQueries({ queryKey, refetchType: 'all' });
+        await queryClient.invalidateQueries({ queryKey: ['watched-videos'], refetchType: 'all' });
       },
     },
   });

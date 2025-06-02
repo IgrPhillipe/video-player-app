@@ -1,17 +1,13 @@
 import { Video } from '@/api/videos';
 import { useAddFavorite, useRemoveFavorite } from '@/api/videos/mutations';
-import {
-  generateGetFavoritesQueryKey,
-  generateGetIsVideoFavoriteQueryKey,
-  useGetIsVideoFavorite,
-} from '@/api/videos/queries';
+import { useGetIsVideoFavorite } from '@/api/videos/queries';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 export const useFavorite = (video: Video) => {
   const queryClient = useQueryClient();
 
-  const { data: isFavorite } = useGetIsVideoFavorite({
+  const { data: isFavorite, refetch } = useGetIsVideoFavorite({
     params: { videoId: video.id },
   });
 
@@ -25,16 +21,10 @@ export const useFavorite = (video: Video) => {
         onSuccess: async () => {
           toast.success('Vídeo adicionado aos favoritos');
 
-          const favoriteVideosQueryKey = generateGetFavoritesQueryKey({});
-          const isVideoFavoriteQueryKey = generateGetIsVideoFavoriteQueryKey({});
+          refetch();
 
           await queryClient.invalidateQueries({
-            queryKey: isVideoFavoriteQueryKey,
-            refetchType: 'all',
-          });
-
-          await queryClient.invalidateQueries({
-            queryKey: favoriteVideosQueryKey,
+            queryKey: ['favorite-videos'],
             refetchType: 'all',
           });
         },
@@ -50,16 +40,10 @@ export const useFavorite = (video: Video) => {
         onSuccess: async () => {
           toast.success('Vídeo removido dos favoritos');
 
-          const favoriteVideosQueryKey = generateGetFavoritesQueryKey({});
-          const isVideoFavoriteQueryKey = generateGetIsVideoFavoriteQueryKey({});
+          refetch();
 
           await queryClient.invalidateQueries({
-            queryKey: isVideoFavoriteQueryKey,
-            refetchType: 'all',
-          });
-
-          await queryClient.invalidateQueries({
-            queryKey: favoriteVideosQueryKey,
+            queryKey: ['favorite-videos'],
             refetchType: 'all',
           });
         },
@@ -69,7 +53,7 @@ export const useFavorite = (video: Video) => {
   };
 
   return {
-    isFavorite,
+    isFavorite: isFavorite ?? false,
     handleFavorite,
     handleUnfavorite,
   };

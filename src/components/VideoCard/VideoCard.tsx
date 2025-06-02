@@ -6,14 +6,13 @@ import { capitalizeWords, secondsToTimestamp } from '@/utils/formatters';
 import { parseTitle } from '@/utils/parser';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo } from 'react';
 
 type VideoCardProps = {
   video: Video;
   href: string;
 };
 
-export const VideoCard = memo(({ href, video }: VideoCardProps) => {
+export const VideoCard = ({ href, video }: VideoCardProps) => {
   const { url, user, video_files, duration, image } = video;
 
   const title = parseTitle(url);
@@ -78,6 +77,4 @@ export const VideoCard = memo(({ href, video }: VideoCardProps) => {
       </article>
     </Link>
   );
-});
-
-VideoCard.displayName = 'VideoCard';
+};

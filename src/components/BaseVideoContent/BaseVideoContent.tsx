@@ -3,7 +3,7 @@ import { useGetIsAutoplayEnabled, useGetVideoById } from '@/api/videos';
 import { parseInfiniteData } from '@/utils/parser';
 import { InfiniteData } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Playlist } from '../Playlist';
 import { VideoContentSkeleton } from '../Skeletons';
 import { VideoPlayer } from '../VideoPlayer';
@@ -37,7 +37,10 @@ export const BaseVideoContent = ({
   });
 
   const videos = parseInfiniteData(playlistItems);
-  const filteredVideos = videos.filter((v) => v.id !== data?.id).reverse();
+  const filteredVideos = useMemo(
+    () => videos.filter((v) => v.id !== data?.id).reverse(),
+    [videos, data],
+  );
 
   const handleNextVideo = useCallback(() => {
     if (isAutoplayEnabled) {

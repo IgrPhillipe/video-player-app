@@ -16,6 +16,26 @@ type VideoPageProps = {
   params: Promise<{ id: string }>;
 };
 
+export const generateMetadata = async ({ params }: VideoPageProps) => {
+  const { id } = await params;
+  const videoId = Number(id);
+  const video = await getVideoById({ videoId });
+
+  if (!video) {
+    return notFound();
+  }
+
+  return {
+    title: parseTitle(video.url),
+    description: video.user.name,
+    openGraph: {
+      title: parseTitle(video.url),
+      description: video.user.name,
+      images: video.image,
+    },
+  };
+};
+
 export default async function VideoPage({ params }: VideoPageProps) {
   const { id } = await params;
 
