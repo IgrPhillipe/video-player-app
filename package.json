@@ -12,7 +12,7 @@
     "validate": "yarn format && yarn type-check && yarn lint",
     "prepare": "husky",
     "husky-init-commit": "husky install && husky set .husky/pre-commit \"yarn validate\"",
-    "husky-init-push": "husky install && husky set .husky/pre-push \"yarn validate\"",
+    "husky-init-push": "husky install && husky set .husky/pre-push \"yarn validate\""
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",
