@@ -1,9 +1,7 @@
 'use client';
 
 import { Video } from '@/api/videos';
-import { useVideoPreview } from '@/hooks/useVideoPreview';
 import { capitalizeWords, secondsToTimestamp } from '@/utils/formatters';
-import { parseTitle } from '@/utils/parser';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -13,49 +11,19 @@ type VideoCardProps = {
 };
 
 export const VideoCard = ({ href, video }: VideoCardProps) => {
-  const { url, user, video_files, duration, image } = video;
+  const { name, user, duration, pictures } = video;
 
-  const title = parseTitle(url);
+  const title = name;
   const author = capitalizeWords(user.name);
-  const videoUrl = video_files.find((file) => file.quality === 'sd')?.link;
-  const thumbnail = image;
+  const thumbnail = pictures.base_link;
 
-  const {
-    showVideo,
-    videoRef,
-    handleMouseEnter,
-    handleMouseLeave,
-    handleTouchStart,
-    handleTouchEnd,
-    internalDuration,
-  } = useVideoPreview(url, duration);
-
-  const durationLabel = internalDuration
-    ? secondsToTimestamp(internalDuration)
-    : secondsToTimestamp(duration);
+  const durationLabel = secondsToTimestamp(duration);
 
   return (
-    <Link
-      href={href}
-      className="block"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
+    <Link href={href} className="block">
       <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
         <div className="relative h-48 w-full rounded-xl overflow-hidden group-hover:shadow-lg shadow-md animate">
-          {showVideo ? (
-            <video
-              ref={videoRef}
-              src={videoUrl}
-              className="h-full w-full object-cover"
-              muted
-              playsInline
-            />
-          ) : (
-            <Image src={thumbnail} alt={title} className="h-full w-full object-cover" fill />
-          )}
+          <Image src={thumbnail} alt={title} className="h-full w-full object-cover" fill />
           <span className="px-1 text-xs bg-black/70 rounded-full absolute bottom-2 right-2 text-white z-10">
             {durationLabel}
           </span>

@@ -2,8 +2,8 @@ import { Video } from '@/api/videos';
 
 export type User = {
   _id: string;
-  favoriteVideos: Video[];
-  watchedVideos: Video[];
+  favoriteVideos: Array<Video & { id: number }>;
+  watchedVideos: Array<Video & { id: number }>;
   autoplay: boolean;
 };
 

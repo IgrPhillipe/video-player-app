@@ -2,6 +2,7 @@ import { Video } from '@/api/videos';
 import { NoVideosResult } from '@/components/NoVideosResult';
 import { VideosSkeleton } from '@/components/Skeletons';
 import { VideoCard } from '@/components/VideoCard';
+import { getIdFromUri } from '@/utils/functions';
 import { Fragment, ReactNode } from 'react';
 
 type BaseVideoGridProps = {
@@ -38,13 +39,12 @@ export const BaseVideoGrid = ({
           <NoVideosResult />
         ) : (
           <Fragment>
-            {items.map((video) => (
-              <VideoCard
-                key={`${video.id}-${video.url}`}
-                href={`${cardLinkBasePath}/${video.id}`}
-                video={video}
-              />
-            ))}
+            {items.map((video) => {
+              const itemId = getIdFromUri(video.uri);
+              return (
+                <VideoCard key={video.uri} href={`${cardLinkBasePath}/${itemId}`} video={video} />
+              );
+            })}
 
             {children}
           </Fragment>

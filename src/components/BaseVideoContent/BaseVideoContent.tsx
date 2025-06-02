@@ -1,5 +1,6 @@
 import { PaginatedResponse } from '@/api/common';
 import { useGetIsAutoplayEnabled, useGetVideoById } from '@/api/videos';
+import { getIdFromUri } from '@/utils/functions';
 import { parseInfiniteData } from '@/utils/parser';
 import { InfiniteData } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
@@ -37,14 +38,23 @@ export const BaseVideoContent = ({
   });
 
   const videos = parseInfiniteData(playlistItems);
+
   const filteredVideos = useMemo(
-    () => videos.filter((v) => v.id !== data?.id).reverse(),
+    () =>
+      videos
+        .filter((v) => {
+          const itemId = getIdFromUri(v.uri);
+          return itemId !== Number(id);
+        })
+        .reverse(),
     [videos, data],
   );
 
   const handleNextVideo = useCallback(() => {
     if (isAutoplayEnabled) {
-      router.push(`${cardLinkBasePath}/${filteredVideos?.[0]?.id}`);
+      const nextVideo = filteredVideos?.[0];
+      const nextVideoId = getIdFromUri(nextVideo.uri);
+      router.push(`${cardLinkBasePath}/${nextVideoId}`);
     }
   }, [isAutoplayEnabled, router, filteredVideos, cardLinkBasePath]);
 

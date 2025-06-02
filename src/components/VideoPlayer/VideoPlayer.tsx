@@ -1,36 +1,40 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import { Video } from '@/api/videos';
 import { FavoriteButton } from '@/components/FavoriteButton';
 import { ShareButton } from '@/components/ShareButton';
-import { parseTitle } from '@/utils/parser';
+import { useVimeoPlayer } from '@/hooks/useVimeoPlayer';
 
 type VideoPlayerProps = {
   video: Video;
   handleNextVideo: () => void;
+  autoplay?: boolean;
 };
 
-export const VideoPlayer = ({ video, handleNextVideo }: VideoPlayerProps) => {
-  const isSafari =
-    typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+export const VideoPlayer = ({ video, handleNextVideo, autoplay = false }: VideoPlayerProps) => {
+  const { iframeRef, iframeUrl } = useVimeoPlayer({
+    videoUri: video.uri,
+    onVideoEnd: handleNextVideo,
+    autoplay,
+    embedUrl: video.player_embed_url,
+  });
 
-  const title = parseTitle(video.url);
+  const title = video.name;
 
-  const file = video.video_files.find((v) => v.quality === 'hd') || video.video_files[0];
+  const aspectRatio = video.width && video.height ? (video.height / video.width) * 100 : 56.25;
 
   return (
     <article className="flex flex-col lg:sticky top-6 w-full bg-foreground rounded-xl h-fit">
-      <div className="flex w-full rounded-xl overflow-hidden aspect-video bg-blue-200 shadow-sm">
-        <video
-          key={file?.link}
-          src={file?.link}
-          poster={video?.image}
-          controls
-          autoPlay={isSafari ? false : true}
-          onEnded={handleNextVideo}
-          className="rounded-xl w-full h-auto max-h-[80vh] object-cover"
-        >
-          <source src={file?.link} type="video/mp4" />
-        </video>
+      <div
+        className="relative w-full aspect-video rounded-xl overflow-hidden bg-black"
+        style={{ paddingBottom: `${aspectRatio}%` }}
+      >
+        <iframe
+          ref={iframeRef}
+          src={iframeUrl}
+          title={title}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+          className="absolute top-0 left-0 w-full h-full border-none"
+        />
       </div>
 
       <section className="flex gap-4 w-full h-fit px-4 py-6 items-start">

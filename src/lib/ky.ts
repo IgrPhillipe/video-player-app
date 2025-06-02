@@ -9,7 +9,7 @@ const kyConfig = ky.create({
 } as Options);
 
 const authorizedRequest: BeforeRequestHook = async (request) => {
-  request.headers.set('Authorization', VIDEOS_API_KEY as string);
+  request.headers.set('Authorization', `Bearer ${VIDEOS_API_KEY}`);
 };
 
 type VideosApi = {

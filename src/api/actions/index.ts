@@ -8,7 +8,7 @@ import { Video } from '@/api/videos';
 import { COLLECTION_NAME, DB_NAME, USER_COOKIE_NAME } from '@/config';
 import clientPromise from '@/lib/mongodb';
 import { User } from '@/types/user';
-import { parseTitle } from '@/utils/parser';
+import { getIdFromUri } from '@/utils/functions';
 
 export const getUserCollection = async () => {
   const client = await clientPromise;
@@ -45,12 +45,14 @@ export const addToWatched = async (video: Video): Promise<void> => {
   const userId = await getUserId();
   const collection = await getUserCollection();
 
-  const isWatched = await isVideoWatched(video.id);
+  const videoId = getIdFromUri(video.uri);
+
+  const isWatched = await isVideoWatched(videoId);
 
   if (!isWatched) {
     await collection.updateOne(
       { _id: userId },
-      { $addToSet: { watchedVideos: video } },
+      { $addToSet: { watchedVideos: { ...video, id: videoId } } },
       { upsert: true },
     );
   }
@@ -70,36 +72,35 @@ export const getWatchedVideos = async ({
   const filteredVideos = watchedVideos.filter((video) => {
     if (!search) return true;
 
-    const title = parseTitle(video.url);
+    const title = video.name;
 
     return title.toLowerCase().includes(search?.toLowerCase() || '');
   });
 
   return {
-    videos: filteredVideos,
-    total_results: filteredVideos.length,
+    data: filteredVideos,
+    total: filteredVideos.length,
     page: 1,
     per_page: filteredVideos.length,
   };
 };
 
-export const removeFromWatched = async (videoId: string): Promise<void> => {
+export const removeFromWatched = async (videoId: number): Promise<void> => {
   const userId = await getUserId();
   const collection = await getUserCollection();
 
-  await collection.updateOne(
-    { _id: userId },
-    { $pull: { watchedVideos: { id: videoId as unknown as number } } },
-  );
+  await collection.updateOne({ _id: userId }, { $pull: { watchedVideos: { id: videoId } } });
 };
 
 export const addToFavorites = async (video: Video): Promise<void> => {
   const userId = await getUserId();
   const collection = await getUserCollection();
 
+  const videoId = getIdFromUri(video.uri);
+
   await collection.updateOne(
     { _id: userId },
-    { $addToSet: { favoriteVideos: video } },
+    { $addToSet: { favoriteVideos: { ...video, id: videoId } } },
     { upsert: true },
   );
 };
@@ -125,14 +126,14 @@ export const getFavoriteVideos = async ({
   const filteredVideos = favoriteVideos.filter((video) => {
     if (!search) return true;
 
-    const title = parseTitle(video.url);
+    const title = video.name;
 
     return title.toLowerCase().includes(search?.toLowerCase() || '');
   });
 
   return {
-    videos: filteredVideos,
-    total_results: filteredVideos.length,
+    data: filteredVideos,
+    total: filteredVideos.length,
     page: 1,
     per_page: filteredVideos.length,
   };

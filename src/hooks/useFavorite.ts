@@ -1,14 +1,17 @@
 import { Video } from '@/api/videos';
 import { useAddFavorite, useRemoveFavorite } from '@/api/videos/mutations';
 import { useGetIsVideoFavorite } from '@/api/videos/queries';
+import { getIdFromUri } from '@/utils/functions';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 export const useFavorite = (video: Video) => {
   const queryClient = useQueryClient();
 
+  const videoId = getIdFromUri(video.uri);
+
   const { data: isFavorite, refetch } = useGetIsVideoFavorite({
-    params: { videoId: video.id },
+    params: { videoId },
   });
 
   const { mutate: addToFavorites } = useAddFavorite({});
@@ -35,7 +38,7 @@ export const useFavorite = (video: Video) => {
 
   const handleUnfavorite = () => {
     removeFromFavorites(
-      { videoId: video.id },
+      { videoId },
       {
         onSuccess: async () => {
           toast.success('Vídeo removido dos favoritos');

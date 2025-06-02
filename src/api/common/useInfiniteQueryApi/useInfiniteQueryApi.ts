@@ -5,8 +5,8 @@ import { InfiniteData, useInfiniteQuery, UseInfiniteQueryResult } from '@tanstac
 export type PaginatedResponse = {
   page: number;
   per_page: number;
-  total_results: number;
-  videos: Video[];
+  total: number;
+  data: Video[];
 };
 
 type UseInfiniteQueryApiParams<TData extends PaginatedResponse, TParams = void> = {
@@ -34,7 +34,7 @@ export const useInfiniteQueryApi = <TData extends PaginatedResponse, TParams = v
       } as TParams & { page: number }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, _, lastPageParam) => {
-      const maxPages = Math.ceil(lastPage.total_results / lastPage.per_page);
+      const maxPages = Math.ceil(lastPage.total / lastPage.per_page);
       const nextPage = lastPageParam + 1;
       const hasNextPage = nextPage + 1 <= maxPages;
 
