@@ -48,7 +48,7 @@ export default async function WatchedVideoPage({ params }: WatchedVideoPageProps
 
   return (
     <Suspense fallback={<VideoContentSkeleton />}>
-      <WatchedVideo dehydratedState={dehydratedState} userId={userId} />
+      <WatchedVideo dehydratedState={dehydratedState} userId={userId} video={video} />
     </Suspense>
   );
 }

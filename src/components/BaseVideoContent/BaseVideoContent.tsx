@@ -1,8 +1,8 @@
 import { PaginatedResponse } from '@/api/common';
-import { useGetIsAutoplayEnabled, useGetVideoById } from '@/api/videos';
+import { useGetIsAutoplayEnabled, Video } from '@/api/videos';
 import { parseInfiniteData } from '@/utils/parser';
 import { InfiniteData } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { Playlist } from '../Playlist';
 import { VideoContentSkeleton } from '../Skeletons';
@@ -15,6 +15,7 @@ type BaseVideoContentProps = {
   cardLinkBasePath: string;
   fetchNextPage?: () => void;
   isFetchingNextPage?: boolean;
+  currentVideo: Video;
 };
 
 export const BaseVideoContent = ({
@@ -24,13 +25,9 @@ export const BaseVideoContent = ({
   isLoading,
   fetchNextPage,
   isFetchingNextPage = false,
+  currentVideo,
 }: BaseVideoContentProps) => {
   const router = useRouter();
-  const { id } = useParams();
-
-  const { data, isLoading: isVideoLoading } = useGetVideoById({
-    params: { videoId: Number(id) },
-  });
 
   const { data: isAutoplayEnabled } = useGetIsAutoplayEnabled({
     params: { userId },
@@ -38,8 +35,8 @@ export const BaseVideoContent = ({
 
   const videos = parseInfiniteData(playlistItems);
   const filteredVideos = useMemo(
-    () => videos.filter((v) => v.id !== data?.id).reverse(),
-    [videos, data],
+    () => videos.filter((v) => v.id !== currentVideo.id).reverse(),
+    [videos, currentVideo],
   );
 
   const handleNextVideo = useCallback(() => {
@@ -48,17 +45,18 @@ export const BaseVideoContent = ({
     }
   }, [isAutoplayEnabled, router, filteredVideos, cardLinkBasePath]);
 
-  if (isLoading || !data || isVideoLoading) {
+  if (isLoading) {
     return <VideoContentSkeleton />;
   }
 
   return (
     <main className="flex lg:flex-row flex-col gap-8 h-full w-full">
-      <VideoPlayer video={data} handleNextVideo={handleNextVideo} />
+      <VideoPlayer video={currentVideo} handleNextVideo={handleNextVideo} />
 
       <Playlist
         userId={userId}
         isAutoplayEnabled={isAutoplayEnabled || false}
+        isLoading={isLoading}
         videos={filteredVideos}
         isFetchingNextPage={isFetchingNextPage}
         fetchNextPage={fetchNextPage}

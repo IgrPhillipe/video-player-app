@@ -42,6 +42,7 @@ export const VideoContent = ({ userId, video }: VideoContentProps) => {
       isLoading={isLoading}
       fetchNextPage={fetchNextPage}
       isFetchingNextPage={isFetchingNextPage}
+      currentVideo={video}
     />
   );
 };
