@@ -52,7 +52,7 @@ export default async function FavoritesVideoPage({ params }: FavoritesVideoPageP
 
   return (
     <Suspense fallback={<VideoContentSkeleton />}>
-      <FavoritesVideo dehydratedState={dehydratedState} userId={userId} />
+      <FavoritesVideo dehydratedState={dehydratedState} userId={userId} video={video} />
     </Suspense>
   );
 }
