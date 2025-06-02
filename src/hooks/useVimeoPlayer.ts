@@ -1,21 +1,35 @@
+'use client';
+
 import Player from '@vimeo/player';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 type UseVimeoPlayerProps = {
   videoUri: string;
   onVideoEnd?: () => void;
-  autoplay?: boolean;
+  isAutoplayEnabled?: boolean;
   embedUrl: string;
 };
 
 export const useVimeoPlayer = ({
   videoUri,
   onVideoEnd,
-  autoplay = false,
+  isAutoplayEnabled = false,
   embedUrl,
 }: UseVimeoPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<Player | null>(null);
+  const isSettingUpRef = useRef(false);
+
+  const isAutoplayEnabledRef = useRef(isAutoplayEnabled);
+  const onVideoEndRef = useRef(onVideoEnd);
+
+  useEffect(() => {
+    isAutoplayEnabledRef.current = isAutoplayEnabled;
+  }, [isAutoplayEnabled]);
+
+  useEffect(() => {
+    onVideoEndRef.current = onVideoEnd;
+  }, [onVideoEnd]);
 
   const iframeUrl = useMemo(
     () =>
@@ -23,38 +37,65 @@ export const useVimeoPlayer = ({
     [embedUrl],
   );
 
-  useEffect(() => {
-    const setupVimeoPlayer = async () => {
-      if (!iframeRef.current) return;
+  const setupVimeoPlayer = useCallback(async () => {
+    if (isSettingUpRef.current) {
+      return;
+    }
 
-      try {
-        const player = new Player(iframeRef.current);
-        playerRef.current = player;
+    if (!iframeRef.current) {
+      return;
+    }
 
-        player.on('timeupdate', (data) => {
-          if (data.duration - data.seconds <= 0.5) {
-            if (autoplay) {
-              player.pause();
-              return onVideoEnd?.();
-            }
-            player.setCurrentTime(0);
-            player.pause();
-          }
-        });
-      } catch (error) {
-        console.error('Erro ao configurar player Vimeo:', error);
+    isSettingUpRef.current = true;
+
+    try {
+      if (playerRef.current) {
+        playerRef.current.off('timeupdate');
       }
-    };
 
+      const player = new Player(iframeRef.current);
+      playerRef.current = player;
+
+      player.on('timeupdate', (data) => {
+        if (data.duration - data.seconds <= 0.5) {
+          const currentAutoplayValue = isAutoplayEnabledRef.current;
+
+          if (currentAutoplayValue) {
+            player.pause();
+            onVideoEndRef.current?.();
+            return;
+          }
+          player.setCurrentTime(0);
+          player.pause();
+        }
+      });
+
+      await player.ready();
+    } catch {
+      console.warn('Erro ao configurar player Vimeo');
+    } finally {
+      isSettingUpRef.current = false;
+    }
+  }, []);
+
+  const memoizedVideoUri = useMemo(() => videoUri, [videoUri]);
+
+  useEffect(() => {
     const timer = setTimeout(setupVimeoPlayer, 1000);
 
     return () => {
       clearTimeout(timer);
-      if (playerRef.current) {
-        playerRef.current.destroy?.();
-      }
     };
-  }, [videoUri, onVideoEnd, autoplay]);
+  }, [memoizedVideoUri, setupVimeoPlayer]);
+
+  useEffect(
+    () => () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    },
+    [],
+  );
 
   return {
     iframeRef,

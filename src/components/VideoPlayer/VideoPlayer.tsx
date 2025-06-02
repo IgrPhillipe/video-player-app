@@ -1,3 +1,5 @@
+'use client';
+
 import { Video } from '@/api/videos';
 import { FavoriteButton } from '@/components/FavoriteButton';
 import { ShareButton } from '@/components/ShareButton';
@@ -6,19 +8,22 @@ import { useVimeoPlayer } from '@/hooks/useVimeoPlayer';
 type VideoPlayerProps = {
   video: Video;
   handleNextVideo: () => void;
-  autoplay?: boolean;
+  isAutoplayEnabled?: boolean;
 };
 
-export const VideoPlayer = ({ video, handleNextVideo, autoplay = false }: VideoPlayerProps) => {
+export const VideoPlayer = ({
+  video,
+  handleNextVideo,
+  isAutoplayEnabled = false,
+}: VideoPlayerProps) => {
   const { iframeRef, iframeUrl } = useVimeoPlayer({
     videoUri: video.uri,
     onVideoEnd: handleNextVideo,
-    autoplay,
+    isAutoplayEnabled,
     embedUrl: video.player_embed_url,
   });
 
   const title = video.name;
-
   const aspectRatio = video.width && video.height ? (video.height / video.width) * 100 : 56.25;
 
   return (

@@ -4,6 +4,14 @@ export type Embed = {
   html: string;
 };
 
+export interface Privacy {
+  view: string;
+  embed: string;
+  download: boolean;
+  add: boolean;
+  comments: string;
+}
+
 export type Size = {
   width: number;
   height: number;
@@ -34,6 +42,7 @@ export type Video = {
   user: VimeoUser;
   width: number;
   height: number;
+  privacy: Privacy;
 };
 
 export type VimeoUser = {

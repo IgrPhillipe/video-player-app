@@ -1,6 +1,10 @@
+'use client';
+
 import { PaginatedResponse } from '@/api/common';
-import { useGetIsAutoplayEnabled, useGetVideoById } from '@/api/videos';
+import { useGetIsAutoplayEnabled } from '@/api/videos';
+import { Video } from '@/api/videos/types';
 import { getIdFromUri } from '@/utils/functions';
+import { checkIfVideoIsForbidden } from '@/utils/functions/checkIfVideoIsForbidden';
 import { parseInfiniteData } from '@/utils/parser';
 import { InfiniteData } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
@@ -16,6 +20,7 @@ type BaseVideoContentProps = {
   cardLinkBasePath: string;
   fetchNextPage?: () => void;
   isFetchingNextPage?: boolean;
+  currentVideo: Video;
 };
 
 export const BaseVideoContent = ({
@@ -25,19 +30,19 @@ export const BaseVideoContent = ({
   isLoading,
   fetchNextPage,
   isFetchingNextPage = false,
+  currentVideo,
 }: BaseVideoContentProps) => {
   const router = useRouter();
   const { id } = useParams();
-
-  const { data, isLoading: isVideoLoading } = useGetVideoById({
-    params: { videoId: Number(id) },
-  });
 
   const { data: isAutoplayEnabled } = useGetIsAutoplayEnabled({
     params: { userId },
   });
 
-  const videos = parseInfiniteData(playlistItems);
+  const videos = useMemo(
+    () => parseInfiniteData(playlistItems).filter((video) => !checkIfVideoIsForbidden(video)),
+    [playlistItems],
+  );
 
   const filteredVideos = useMemo(
     () =>
@@ -47,27 +52,34 @@ export const BaseVideoContent = ({
           return itemId !== Number(id);
         })
         .reverse(),
-    [videos, data],
+    [videos, id],
   );
 
   const handleNextVideo = useCallback(() => {
     if (isAutoplayEnabled) {
       const nextVideo = filteredVideos?.[0];
-      const nextVideoId = getIdFromUri(nextVideo.uri);
-      router.push(`${cardLinkBasePath}/${nextVideoId}`);
+      if (nextVideo) {
+        const nextVideoId = getIdFromUri(nextVideo.uri);
+        router.push(`${cardLinkBasePath}/${nextVideoId}`);
+      }
     }
   }, [isAutoplayEnabled, router, filteredVideos, cardLinkBasePath]);
 
-  if (isLoading || !data || isVideoLoading) {
+  if (isLoading) {
     return <VideoContentSkeleton />;
   }
 
   return (
     <main className="flex lg:flex-row flex-col gap-8 h-full w-full">
-      <VideoPlayer video={data} handleNextVideo={handleNextVideo} />
+      <VideoPlayer
+        video={currentVideo}
+        handleNextVideo={handleNextVideo}
+        isAutoplayEnabled={isAutoplayEnabled}
+      />
 
       <Playlist
         userId={userId}
+        isLoading={isLoading}
         isAutoplayEnabled={isAutoplayEnabled || false}
         videos={filteredVideos}
         isFetchingNextPage={isFetchingNextPage}

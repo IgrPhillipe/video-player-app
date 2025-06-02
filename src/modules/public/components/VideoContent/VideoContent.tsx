@@ -29,8 +29,10 @@ export const VideoContent = ({ userId, video }: VideoContentProps) => {
   });
 
   useEffect(() => {
-    if (video) mutateAsync({ video: video });
-  }, [video]);
+    if (video?.uri) {
+      mutateAsync({ video });
+    }
+  }, [video, mutateAsync]);
 
   return (
     <BaseVideoContent
@@ -40,6 +42,7 @@ export const VideoContent = ({ userId, video }: VideoContentProps) => {
       isLoading={isLoading}
       fetchNextPage={fetchNextPage}
       isFetchingNextPage={isFetchingNextPage}
+      currentVideo={video}
     />
   );
 };

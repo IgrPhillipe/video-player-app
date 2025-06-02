@@ -5,6 +5,7 @@ import { BaseVideoGrid } from '@/components/BaseVideoGrid';
 import { InfiniteScrollObserver } from '@/components/InfiniteScrollObserver';
 import { VideosSkeleton } from '@/components/Skeletons';
 import { ALLOWED_CATEGORIES_MAP } from '@/config';
+import { checkIfVideoIsForbidden } from '@/utils/functions/checkIfVideoIsForbidden';
 import { parseInfiniteData } from '@/utils/parser';
 import { useSearchParams } from 'next/navigation';
 
@@ -20,7 +21,7 @@ export const HomeContent = () => {
     },
   });
 
-  const videos = parseInfiniteData(data);
+  const videos = parseInfiniteData(data).filter((video) => !checkIfVideoIsForbidden(video));
 
   const title = search
     ? `Pesquisa por: ${search}`

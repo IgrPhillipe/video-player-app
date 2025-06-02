@@ -1,12 +1,12 @@
 import { generateGetIsAutoplayEnabledQueryKey, Video } from '@/api/videos';
 import { useEnableAutoplay } from '@/api/videos/mutations';
-import { PlaylistSkeleton } from '@/components/Skeletons';
+import { InfiniteScrollObserver } from '@/components/InfiniteScrollObserver';
+import { PlaylistContentSkeleton, PlaylistSkeleton } from '@/components/Skeletons';
 import { Switch } from '@/components/ui/switch';
 import { VideoCard } from '@/components/VideoCard';
 import { getIdFromUri } from '@/utils/functions';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
-import { InfiniteScrollObserver } from '../InfiniteScrollObserver';
 
 type PlaylistProps = {
   videos: Video[];
@@ -14,6 +14,7 @@ type PlaylistProps = {
   fetchNextPage?: () => void;
   isAutoplayEnabled: boolean;
   userId: string;
+  isLoading: boolean;
 };
 
 export const Playlist = ({
@@ -22,6 +23,7 @@ export const Playlist = ({
   fetchNextPage,
   isAutoplayEnabled,
   userId,
+  isLoading,
 }: PlaylistProps) => {
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -57,6 +59,10 @@ export const Playlist = ({
     return `${videoBasePath}/${videoId}`;
   };
 
+  if (isLoading) {
+    return <PlaylistContentSkeleton />;
+  }
+
   return (
     <aside className="flex lg:w-1/3 w-full lg:max-w-80 flex-col gap-4 h-full">
       <section className="rounded-xl h-12 text-accent-foreground bg-foreground w-full p-4 flex justify-between items-center">
@@ -75,7 +81,11 @@ export const Playlist = ({
               return <VideoCard key={videoId} href={videoHref(videoId)} video={video} />;
             })}
 
-            <InfiniteScrollObserver isLoading={isFetchingNextPage} fetchNextPage={fetchNextPage}>
+            <InfiniteScrollObserver
+              isLoading={isFetchingNextPage}
+              fetchNextPage={fetchNextPage}
+              className="flex flex-col w-full"
+            >
               <PlaylistSkeleton />
             </InfiniteScrollObserver>
           </div>
