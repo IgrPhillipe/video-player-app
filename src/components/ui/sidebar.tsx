@@ -4,6 +4,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 
+import { ResponsiveSidebarTrigger } from '@/components/Sidebar/ResponsiveSidebarTrigger';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -16,9 +17,8 @@ import {
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useIsMobile } from '@/hooks/useIsMobile';
+import { useIsMobile } from '@/hooks';
 import { cn } from '@/lib/utils';
-import { ResponsiveSidebarTrigger } from '../Sidebar/ResponsiveSidebarTrigger';
 import { PanelLeftCloseIcon } from './panel-left-close';
 import { PanelLeftOpenIcon } from './panel-left-open';
 
@@ -71,11 +71,11 @@ const SidebarProvider = React.forwardRef<
     ref,
   ) => {
     const isMobile = useIsMobile();
-    const [openMobile, setOpenMobile] = React.useState(false);
+    const [openMobile, setOpenMobile] = React.useState<boolean>(false);
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen);
+    const [_open, _setOpen] = React.useState<boolean>(defaultOpen);
     const open = openProp ?? _open;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
@@ -366,7 +366,7 @@ SidebarInput.displayName = 'SidebarInput';
 
 const SidebarHeader = React.forwardRef<HTMLDivElement, React.ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-    <div
+    <header
       ref={ref}
       data-sidebar="header"
       className={cn('flex flex-col gap-2 p-2', className)}
@@ -378,7 +378,7 @@ SidebarHeader.displayName = 'SidebarHeader';
 
 const SidebarFooter = React.forwardRef<HTMLDivElement, React.ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-    <div
+    <footer
       ref={ref}
       data-sidebar="footer"
       className={cn('flex flex-col gap-2 p-2 pb-3', className)}
@@ -403,7 +403,7 @@ SidebarSeparator.displayName = 'SidebarSeparator';
 
 const SidebarContent = React.forwardRef<HTMLDivElement, React.ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-    <div
+    <main
       ref={ref}
       data-sidebar="content"
       className={cn(
@@ -418,7 +418,7 @@ SidebarContent.displayName = 'SidebarContent';
 
 const SidebarGroup = React.forwardRef<HTMLDivElement, React.ComponentProps<'div'>>(
   ({ className, ...props }, ref) => (
-    <div
+    <section
       ref={ref}
       data-sidebar="group"
       className={cn('relative flex w-full min-w-0 flex-col p-2', className)}
@@ -432,7 +432,7 @@ const SidebarGroupLabel = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'div';
+  const Comp = asChild ? Slot : 'h2';
 
   return (
     <Comp

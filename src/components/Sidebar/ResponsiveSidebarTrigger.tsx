@@ -7,7 +7,7 @@ export const ResponsiveSidebarTrigger = () => {
 
   const isExpanded = state === 'expanded';
 
-  const Icon = isExpanded ? PanelLeftCloseIcon : PanelLeftOpenIcon;
+  const Icon = isExpanded ? PanelLeftOpenIcon : PanelLeftCloseIcon;
 
   return (
     <button

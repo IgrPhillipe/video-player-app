@@ -6,10 +6,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { YoutubeIcon, type YoutubeIconHandle } from '@/components/ui/youtube';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useRef } from 'react';
-import { YoutubeIcon, type YoutubeIconHandle } from '../ui/youtube';
 
 export function SidebarLogo() {
   const iconRef = useRef<YoutubeIconHandle>(null);

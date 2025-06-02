@@ -1,32 +1,75 @@
-import { getVideoById, getVideos } from '@/api/videos';
+import { getUserId } from '@/api/actions';
+import {
+  generateGetPlaylistVideosQueryKey,
+  generateGetVideoByIdQueryKey,
+  getVideoById,
+  getVideos,
+} from '@/api/videos';
+import { VideoContentSkeleton } from '@/components/Skeletons';
 import { Video } from '@/modules/public/pages';
+import { parseTitle } from '@/utils/parser';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 type VideoPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default async function VideoPage({ params }: VideoPageProps) {
-  const queryClient = new QueryClient();
+export const generateMetadata = async ({ params }: VideoPageProps) => {
+  const { id } = await params;
+  const videoId = Number(id);
+  const video = await getVideoById({ videoId });
 
+  if (!video) {
+    return notFound();
+  }
+
+  return {
+    title: parseTitle(video.url),
+    description: video.user.name,
+    openGraph: {
+      title: parseTitle(video.url),
+      description: video.user.name,
+      images: video.image,
+    },
+  };
+};
+
+export default async function VideoPage({ params }: VideoPageProps) {
   const { id } = await params;
 
+  const queryClient = new QueryClient();
+
+  const userId = await getUserId();
+  const videoId = Number(id);
+
+  const video = await getVideoById({ videoId });
+
+  if (!video) {
+    return notFound();
+  }
+
+  const title = parseTitle(video?.url);
+
   await queryClient.prefetchQuery({
-    queryKey: ['video-by-id', id],
-    queryFn: () => getVideoById({ videoId: id }),
+    queryKey: generateGetVideoByIdQueryKey({ videoId }),
+    queryFn: () => getVideoById({ videoId }),
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['playlist-videos', undefined, id],
-    queryFn: () => getVideos({ page: 1, search: undefined }),
+    queryKey: generateGetPlaylistVideosQueryKey({
+      search: title,
+      videoId,
+    }),
+    queryFn: () => getVideos({ page: 1, search: title }),
   });
 
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Video dehydratedState={dehydratedState} />
+    <Suspense fallback={<VideoContentSkeleton />}>
+      <Video dehydratedState={dehydratedState} userId={userId} video={video} />
     </Suspense>
   );
 }

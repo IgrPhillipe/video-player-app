@@ -1,146 +1,80 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { secondsToTimestamp } from '@/utils/formatters';
+import { Video } from '@/api/videos';
+import { useVideoPreview } from '@/hooks/useVideoPreview';
+import { capitalizeWords, secondsToTimestamp } from '@/utils/formatters';
+import { parseTitle } from '@/utils/parser';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 type VideoCardProps = {
+  video: Video;
   href: string;
-  title: string;
-  author: string;
-  duration: number;
-  thumbnail: string;
-  videoUrl?: string;
 };
 
-export const VideoCard = memo(
-  ({ href, title, author, duration, thumbnail, videoUrl }: VideoCardProps) => {
-    const [showVideo, setShowVideo] = useState(false);
-    const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [internalDuration, setInternalDuration] = useState(duration);
+export const VideoCard = ({ href, video }: VideoCardProps) => {
+  const { url, user, video_files, duration, image } = video;
 
-    const isHoveredRef = useRef(false);
+  const title = parseTitle(url);
+  const author = capitalizeWords(user.name);
+  const videoUrl = video_files.find((file) => file.quality === 'sd')?.link;
+  const thumbnail = image;
 
-    const handleMouseEnter = useCallback(() => {
-      isHoveredRef.current = true;
+  const {
+    showVideo,
+    videoRef,
+    handleMouseEnter,
+    handleMouseLeave,
+    handleTouchStart,
+    handleTouchEnd,
+    internalDuration,
+  } = useVideoPreview(url, duration);
 
-      hoverTimeoutRef.current = setTimeout(() => {
-        if (videoUrl && isHoveredRef.current) {
-          setShowVideo(true);
-        }
-      }, 2000);
-    }, [videoUrl]);
+  const durationLabel = internalDuration
+    ? secondsToTimestamp(internalDuration)
+    : secondsToTimestamp(duration);
 
-    const handleMouseLeave = useCallback(() => {
-      isHoveredRef.current = false;
-      setShowVideo(false);
-
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-        hoverTimeoutRef.current = null;
-      }
-
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-    }, []);
-
-    const handleTouchStart = useCallback(() => {
-      isHoveredRef.current = true;
-
-      if (videoUrl) {
-        setShowVideo(true);
-        if (videoRef.current) {
-          videoRef.current.play().catch(() => {});
-        }
-      }
-    }, [videoUrl]);
-
-    const handleTouchEnd = useCallback(() => {
-      isHoveredRef.current = false;
-      setShowVideo(false);
-
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-        hoverTimeoutRef.current = null;
-      }
-
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-    }, []);
-
-    useEffect(() => {
-      if (showVideo && videoRef.current) {
-        videoRef.current.play();
-      }
-    }, [showVideo]);
-
-    useEffect(() => {
-      if (videoRef.current) {
-        videoRef.current.addEventListener('timeupdate', () => {
-          setInternalDuration(duration - (videoRef.current?.currentTime || 0) + 1);
-        });
-      }
-    }, [duration]);
-
-    return (
-      <Link href={href} key={title}>
-        <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
-          <div
-            className="relative h-48 w-full rounded-xl overflow-hidden group-hover:shadow-lg shadow-md animate"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            <Image
-              src={thumbnail}
-              alt={title}
-              fill
-              loading="lazy"
-              className={cn(
-                'object-cover transition-opacity duration-300',
-                showVideo ? 'opacity-0' : 'opacity-100',
-              )}
+  return (
+    <Link
+      href={href}
+      className="block"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <article className="cursor-pointer rounded-xl flex flex-col gap-2 group w-full">
+        <div className="relative h-48 w-full rounded-xl overflow-hidden group-hover:shadow-lg shadow-md animate">
+          {showVideo ? (
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              className="h-full w-full object-cover"
+              muted
+              playsInline
             />
-
-            {videoUrl && (
-              <video
-                ref={videoRef}
-                src={videoUrl}
-                muted
-                loop
-                playsInline
-                className={cn(
-                  'absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300',
-                  showVideo ? 'opacity-100' : 'opacity-0',
-                )}
-              />
-            )}
-
-            <time className="px-1 text-xs bg-black/70 rounded-full absolute bottom-2 right-2 text-white z-10">
-              {internalDuration
-                ? secondsToTimestamp(internalDuration)
-                : secondsToTimestamp(duration)}
-            </time>
-          </div>
-
-          <header className="flex flex-col px-2">
-            <h3 className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline animate">
-              {title}
-            </h3>
-            <p className="text-sm text-muted-foreground line-clamp-1 text-ellipsis">{author}</p>
-          </header>
-        </article>
-      </Link>
-    );
-  },
-);
-
-VideoCard.displayName = 'VideoCard';
+          ) : (
+            <Image src={thumbnail} alt={title} className="h-full w-full object-cover" fill />
+          )}
+          <span className="px-1 text-xs bg-black/70 rounded-full absolute bottom-2 right-2 text-white z-10">
+            {durationLabel}
+          </span>
+        </div>
+        <header className="flex flex-col px-2">
+          <h3
+            id={`video-title-${title}`}
+            className="text-sm font-medium text-primary line-clamp-1 text-ellipsis group-hover:underline animate"
+          >
+            {title}
+          </h3>
+          <p
+            className="text-sm text-muted-foreground line-clamp-1 text-ellipsis"
+            aria-label={`Autor: ${author}`}
+          >
+            {author}
+          </p>
+        </header>
+      </article>
+    </Link>
+  );
+};

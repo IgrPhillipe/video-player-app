@@ -4,6 +4,7 @@ import {
   PropsWithChildren,
   ReactNode,
   RefAttributes,
+  RefObject,
 } from 'react';
 
 export type RootLayoutProps = Readonly<{
@@ -27,3 +28,5 @@ export type CustomIconHandle = {
   startAnimation: () => void;
   stopAnimation: () => void;
 };
+
+export type VideoRef = RefObject<HTMLVideoElement>;

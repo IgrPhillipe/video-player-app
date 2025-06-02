@@ -8,9 +8,14 @@ type UseGetVideoByIdProps = {
   queryConfig?: DefaultQueryConfig<GetVideoByIdResponse>;
 };
 
+export const generateGetVideoByIdQueryKey = (params: GetVideoByIdParams) => [
+  'video-by-id',
+  params.videoId,
+];
+
 export const useGetVideoById = ({ params, queryConfig }: UseGetVideoByIdProps) =>
   useQueryApi<GetVideoByIdResponse, GetVideoByIdParams>({
-    queryKey: ['video-by-id', params.videoId],
+    queryKey: generateGetVideoByIdQueryKey(params),
     queryFn: getVideoById,
     params,
     queryConfig,

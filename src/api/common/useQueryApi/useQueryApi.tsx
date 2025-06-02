@@ -1,5 +1,5 @@
+import { DefaultQueryConfig, QueryFn } from '@/api/common/types';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { DefaultQueryConfig, QueryFn } from '../types';
 
 type UseQueryApiParams<TData, TParams = void> = {
   queryFn: QueryFn<TData, TParams>;

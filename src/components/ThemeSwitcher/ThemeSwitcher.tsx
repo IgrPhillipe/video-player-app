@@ -8,20 +8,16 @@ import { Suspense, useEffect, useState } from 'react';
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const isDark = theme === 'dark';
 
+  const getThemeIcon = () => (isDark ? SunIcon : MoonIcon);
+  const getThemeLabel = () => (isDark ? 'Claro' : 'Escuro');
+
   const handleThemeChange = () => {
-    if (isDark) {
-      return setTheme('light');
-    }
-
-    setTheme('dark');
+    setTheme(isDark ? 'light' : 'dark');
   };
-
-  const Icon = isDark ? SunIcon : MoonIcon;
-
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -33,7 +29,7 @@ export const ThemeSwitcher = () => {
 
   return (
     <Suspense fallback={<></>}>
-      <Sidebar.Button name={isDark ? 'Claro' : 'Escuro'} icon={Icon} onClick={handleThemeChange} />
+      <Sidebar.Button name={getThemeLabel()} icon={getThemeIcon()} onClick={handleThemeChange} />
     </Suspense>
   );
 };

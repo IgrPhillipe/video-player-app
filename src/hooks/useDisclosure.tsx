@@ -20,7 +20,7 @@ export function useDisclosure(props: UseDisclosureProps = {}) {
   const handleOpen = useCallbackRef(onOpenProp);
   const handleClose = useCallbackRef(onCloseProp);
 
-  const [openState, setOpen] = useState(props.defaultOpen || false);
+  const [openState, setOpen] = useState<boolean>(props.defaultOpen || false);
 
   const open = openProp !== undefined ? openProp : openState;
 

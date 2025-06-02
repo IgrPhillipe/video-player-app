@@ -1,10 +1,11 @@
 'use client';
 
-import { HydrationBoundary } from '@tanstack/react-query';
-import { HomeContent } from '../components';
+import { DehydratedState, HydrationBoundary } from '@tanstack/react-query';
+
+import { HomeContent } from '@/modules/public/components';
 
 type HomeProps = {
-  dehydratedState: unknown;
+  dehydratedState: DehydratedState;
 };
 
 export const Home = ({ dehydratedState }: HomeProps) => (

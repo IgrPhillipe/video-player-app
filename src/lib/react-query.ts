@@ -1,6 +1,11 @@
-import { defaultShouldDehydrateQuery, isServer, QueryClient } from '@tanstack/react-query';
+import {
+  defaultShouldDehydrateQuery,
+  isServer,
+  QueryClient,
+  QueryClientConfig,
+} from '@tanstack/react-query';
 
-export const makeQueryClient = () =>
+export const makeQueryClient = (): QueryClient =>
   new QueryClient({
     defaultOptions: {
       queries: {
@@ -12,11 +17,11 @@ export const makeQueryClient = () =>
           defaultShouldDehydrateQuery(query) || query.state.status === 'pending',
       },
     },
-  });
+  } as QueryClientConfig);
 
 let browserQueryClient: QueryClient | undefined = undefined;
 
-export const getQueryClient = () => {
+export const getQueryClient = (): QueryClient => {
   if (isServer) {
     return makeQueryClient();
   } else {
