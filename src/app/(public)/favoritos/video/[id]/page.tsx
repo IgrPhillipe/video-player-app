@@ -1,4 +1,4 @@
-import { getFavoriteVideos, getUserId } from '@/api/actions';
+import { getFavoriteVideos, getUserId, isVideoFavorite } from '@/api/actions';
 import {
   generateGetFavoritesQueryKey,
   generateGetVideoByIdQueryKey,
@@ -23,6 +23,12 @@ export default async function FavoritesVideoPage({ params }: FavoritesVideoPageP
   const video = await getVideoById({ videoId });
 
   if (!video) {
+    return notFound();
+  }
+
+  const videoIsFavorite = await isVideoFavorite(videoId);
+
+  if (!videoIsFavorite) {
     return notFound();
   }
 

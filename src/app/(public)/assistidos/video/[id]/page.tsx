@@ -1,4 +1,4 @@
-import { getUserId, getWatchedVideos } from '@/api/actions';
+import { getUserId, getWatchedVideos, isVideoWatched } from '@/api/actions';
 import {
   generateGetVideoByIdQueryKey,
   generateGetWatchedQueryKey,
@@ -23,6 +23,12 @@ export default async function WatchedVideoPage({ params }: WatchedVideoPageProps
   const video = await getVideoById({ videoId });
 
   if (!video) {
+    return notFound();
+  }
+
+  const videoIsWatched = await isVideoWatched(videoId);
+
+  if (!videoIsWatched) {
     return notFound();
   }
 
