@@ -1,7 +1,7 @@
-import { MONGO_URI } from '@/config';
+import { MONGODB_URI } from '@/config';
 import { MongoClient, MongoClientOptions } from 'mongodb';
 
-if (!MONGO_URI) {
+if (!MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
@@ -18,13 +18,13 @@ if (process.env.NODE_ENV === 'development') {
   };
 
   if (!globalWithMongo._mongoClientPromise) {
-    client = new MongoClient(MONGO_URI, options);
+    client = new MongoClient(MONGODB_URI, options);
     globalWithMongo._mongoClientPromise = client.connect();
   }
   clientPromise = globalWithMongo._mongoClientPromise;
 } else {
   // In production mode, it's best to not use a global variable.
-  client = new MongoClient(MONGO_URI, options);
+  client = new MongoClient(MONGODB_URI, options);
   clientPromise = client.connect();
 }
 
