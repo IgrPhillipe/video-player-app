@@ -81,7 +81,8 @@ yarn start
 
 ## ✅ Funcionalidades Implementadas
 
-- [x] Integração de vídeos via Pexels API
+- [x] Integração de vídeos via Pexels API e player nativo
+- [x] Integração de vídeos via Vimeo API e iframe
 - [x] Lista de vídeos com grid responsivo
 - [x] Player principal com vídeo selecionado
 - [x] Sistema de favoritos persistido em MongoDB Atlas
