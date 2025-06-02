@@ -31,6 +31,6 @@
     ".next/types/**/*.ts",
     "src/components/Layouts/AuthLayout/AuthLayout",
     "src/modules/application/components/FormTable/FormTableRow"
-  ],
+, "jest.config.js"  ],
   "exclude": ["node_modules"]
 }
