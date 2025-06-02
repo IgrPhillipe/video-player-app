@@ -1,5 +1,10 @@
 import { getUserId, getWatchedVideos } from '@/api/actions';
-import { getVideoById } from '@/api/videos';
+import {
+  generateGetVideoByIdQueryKey,
+  generateGetWatchedQueryKey,
+  getVideoById,
+} from '@/api/videos';
+import { VideoContentSkeleton } from '@/components/Skeletons';
 import { WatchedVideo } from '@/modules/public/pages';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
@@ -13,8 +18,9 @@ export default async function WatchedVideoPage({ params }: WatchedVideoPageProps
   const queryClient = new QueryClient();
 
   const { id } = await params;
+  const videoId = Number(id);
 
-  const video = await getVideoById({ videoId: id });
+  const video = await getVideoById({ videoId });
 
   if (!video) {
     return notFound();
@@ -23,19 +29,19 @@ export default async function WatchedVideoPage({ params }: WatchedVideoPageProps
   const userId = await getUserId();
 
   await queryClient.prefetchQuery({
-    queryKey: ['video-by-id', id],
-    queryFn: () => getVideoById({ videoId: id }),
+    queryKey: generateGetVideoByIdQueryKey({ videoId }),
+    queryFn: () => getVideoById({ videoId }),
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['watched-videos', userId, undefined, id],
-    queryFn: () => getWatchedVideos({ page: 1, fromVideoId: parseInt(id) }),
+    queryKey: generateGetWatchedQueryKey({ userId }),
+    queryFn: () => getWatchedVideos({}),
   });
 
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<VideoContentSkeleton />}>
       <WatchedVideo dehydratedState={dehydratedState} userId={userId} />
     </Suspense>
   );

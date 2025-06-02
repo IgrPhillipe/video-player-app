@@ -1,6 +1,10 @@
 import { Video } from '@/api/videos';
 import { useAddFavorite, useRemoveFavorite } from '@/api/videos/mutations';
-import { useGetIsVideoFavorite } from '@/api/videos/queries/useGetIsVideoFavorite';
+import {
+  generateGetFavoritesQueryKey,
+  generateGetIsVideoFavoriteQueryKey,
+  useGetIsVideoFavorite,
+} from '@/api/videos/queries';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -20,11 +24,17 @@ export const useFavorite = (video: Video) => {
       {
         onSuccess: async () => {
           toast.success('Vídeo adicionado aos favoritos');
+
+          const favoriteVideosQueryKey = generateGetFavoritesQueryKey({});
+          const isVideoFavoriteQueryKey = generateGetIsVideoFavoriteQueryKey({});
+
           await queryClient.invalidateQueries({
-            queryKey: ['is-video-favorite'],
+            queryKey: isVideoFavoriteQueryKey,
+            refetchType: 'all',
           });
+
           await queryClient.invalidateQueries({
-            queryKey: ['favorite-videos'],
+            queryKey: favoriteVideosQueryKey,
             refetchType: 'all',
           });
         },
@@ -39,11 +49,17 @@ export const useFavorite = (video: Video) => {
       {
         onSuccess: async () => {
           toast.success('Vídeo removido dos favoritos');
+
+          const favoriteVideosQueryKey = generateGetFavoritesQueryKey({});
+          const isVideoFavoriteQueryKey = generateGetIsVideoFavoriteQueryKey({});
+
           await queryClient.invalidateQueries({
-            queryKey: ['is-video-favorite'],
+            queryKey: isVideoFavoriteQueryKey,
+            refetchType: 'all',
           });
+
           await queryClient.invalidateQueries({
-            queryKey: ['favorite-videos'],
+            queryKey: favoriteVideosQueryKey,
             refetchType: 'all',
           });
         },

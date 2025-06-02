@@ -1,8 +1,19 @@
+import { VideoRef } from '@/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export const useVideoPreview = (videoUrl: string, duration: number) => {
-  const [showVideo, setShowVideo] = useState(false);
-  const [internalDuration, setInternalDuration] = useState(duration);
+type UseVideoPreviewReturn = {
+  showVideo: boolean;
+  videoRef: VideoRef;
+  handleMouseEnter: () => void;
+  handleMouseLeave: () => void;
+  handleTouchStart: () => void;
+  handleTouchEnd: () => void;
+  internalDuration: number;
+};
+
+export const useVideoPreview = (videoUrl: string, duration: number): UseVideoPreviewReturn => {
+  const [showVideo, setShowVideo] = useState<boolean>(false);
+  const [internalDuration, setInternalDuration] = useState<number>(duration);
 
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -111,7 +122,7 @@ export const useVideoPreview = (videoUrl: string, duration: number) => {
 
   return {
     showVideo,
-    videoRef,
+    videoRef: videoRef as React.RefObject<HTMLVideoElement>,
     handleMouseEnter,
     handleMouseLeave,
     handleTouchStart,

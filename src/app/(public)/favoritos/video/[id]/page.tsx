@@ -1,5 +1,10 @@
 import { getFavoriteVideos, getUserId } from '@/api/actions';
-import { getVideoById } from '@/api/videos';
+import {
+  generateGetFavoritesQueryKey,
+  generateGetVideoByIdQueryKey,
+  getVideoById,
+} from '@/api/videos';
+import { VideoContentSkeleton } from '@/components/Skeletons';
 import { FavoritesVideo } from '@/modules/public/pages';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
@@ -13,8 +18,9 @@ export default async function FavoritesVideoPage({ params }: FavoritesVideoPageP
   const queryClient = new QueryClient();
 
   const { id } = await params;
+  const videoId = Number(id);
 
-  const video = await getVideoById({ videoId: id });
+  const video = await getVideoById({ videoId });
 
   if (!video) {
     return notFound();
@@ -23,19 +29,23 @@ export default async function FavoritesVideoPage({ params }: FavoritesVideoPageP
   const userId = await getUserId();
 
   await queryClient.prefetchQuery({
-    queryKey: ['video-by-id', id],
-    queryFn: () => getVideoById({ videoId: id }),
+    queryKey: generateGetVideoByIdQueryKey({ videoId }),
+    queryFn: () => getVideoById({ videoId }),
+  });
+
+  const favoriteVideosQueryKey = generateGetFavoritesQueryKey({
+    userId,
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['favorite-videos', userId, undefined, id],
-    queryFn: () => getFavoriteVideos({ page: 1, search: undefined, fromVideoId: parseInt(id) }),
+    queryKey: favoriteVideosQueryKey,
+    queryFn: () => getFavoriteVideos({}),
   });
 
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<VideoContentSkeleton />}>
       <FavoritesVideo dehydratedState={dehydratedState} userId={userId} />
     </Suspense>
   );

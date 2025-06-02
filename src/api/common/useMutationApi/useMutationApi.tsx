@@ -1,5 +1,5 @@
+import { DefaultMutationConfig, MutationFn } from '@/api/common/types';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import { DefaultMutationConfig, MutationFn } from '../types';
 
 type UseMutationApiParams<TData, TBody = void> = {
   mutationKey: readonly unknown[];

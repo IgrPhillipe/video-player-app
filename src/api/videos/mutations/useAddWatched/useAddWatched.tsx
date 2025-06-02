@@ -1,7 +1,7 @@
 import { addToWatched } from '@/api/actions';
+import { useMutationApi } from '@/api/common';
 import { DefaultMutationConfig } from '@/api/common/types';
-import { useMutationApi } from '@/api/common/useMutationApi';
-import { AddWatchedParams, AddWatchedResponse } from '../../types';
+import { AddWatchedParams, AddWatchedResponse } from '@/api/videos/types';
 
 type UseAddWatchedProps = {
   mutationConfig?: DefaultMutationConfig<AddWatchedResponse, AddWatchedParams>;

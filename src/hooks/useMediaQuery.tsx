@@ -9,7 +9,7 @@ function listen(query: MediaQueryList, callback: MediaQueryCallback) {
   try {
     query.addEventListener('change', callback);
     return () => query.removeEventListener('change', callback);
-  } catch (e) {
+  } catch {
     query.addListener(callback);
     return () => query.removeListener(callback);
   }
@@ -21,6 +21,11 @@ export interface UseMediaQueryOptions {
   getWindow?(): typeof window;
 }
 
+type UseMediaQueryReturn = {
+  media: string;
+  matches: boolean;
+};
+
 export const useMediaQuery = (query: string[], options: UseMediaQueryOptions = {}): boolean[] => {
   const { fallback: _fallback = [], ssr = true, getWindow } = options;
   const getWin = useCallbackRef(getWindow);
@@ -29,7 +34,7 @@ export const useMediaQuery = (query: string[], options: UseMediaQueryOptions = {
 
   const fallback = _fallback?.filter((v) => v != null) as boolean[];
 
-  const [value, setValue] = useState(() =>
+  const [value, setValue] = useState<UseMediaQueryReturn[]>(() =>
     queries.map((query, index) => {
       if (!ssr) {
         const { media, matches } = (getWindow?.() ?? window).matchMedia(query);

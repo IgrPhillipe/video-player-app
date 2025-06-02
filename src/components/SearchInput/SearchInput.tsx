@@ -13,7 +13,7 @@ export const SearchInput = () => {
 
   const iconRef = useRef<CustomIconHandle>(null);
 
-  const [internalSearch, setInternalSearch] = useState('');
+  const [internalSearch, setInternalSearch] = useState<string>('');
 
   const [search, setSearch] = useQueryState('search', {
     defaultValue: '',
@@ -57,7 +57,7 @@ export const SearchInput = () => {
         value={internalSearch}
         onChange={handleSearch}
         placeholder="Pesquisar"
-        className="focus-visible:ring-2 focus-visible:ring-neutral-400 bg-foreground h-12"
+        className="focus-visible:ring-2 focus-visible:ring-neutral-400 bg-foreground rounded-xl h-12"
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleSubmit();

@@ -1,93 +1,80 @@
-import { Video } from '@/api/videos';
+import { generateGetIsAutoplayEnabledQueryKey, Video } from '@/api/videos';
+import { useEnableAutoplay } from '@/api/videos/mutations';
+import { PlaylistSkeleton } from '@/components/Skeletons';
 import { Switch } from '@/components/ui/switch';
 import { VideoCard } from '@/components/VideoCard';
-import { capitalizeWords } from '@/utils/formatters';
+import { useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
-import { Dispatch, SetStateAction } from 'react';
-import { InView } from 'react-intersection-observer';
-import { PlaylistSkeleton } from '../PlaylistSkeleton';
+import { InfiniteScrollObserver } from '../InfiniteScrollObserver';
 
 type PlaylistProps = {
-  autoplay: boolean;
-  onChangeAutoplay: Dispatch<SetStateAction<boolean>>;
   videos: Video[];
-  isLoading: boolean;
   isFetchingNextPage: boolean;
-  fetchNextPage: () => void;
+  fetchNextPage?: () => void;
+  isAutoplayEnabled: boolean;
+  userId: string;
 };
 
 export const Playlist = ({
-  autoplay,
-  onChangeAutoplay,
   videos,
-  isLoading,
   isFetchingNextPage,
   fetchNextPage,
+  isAutoplayEnabled,
+  userId,
 }: PlaylistProps) => {
   const pathname = usePathname();
-
-  const handleChangeLoader = (inView: boolean) => {
-    if (inView && fetchNextPage) {
-      fetchNextPage();
-    }
-  };
+  const queryClient = useQueryClient();
 
   const isFavoritesPage = pathname.startsWith('/favoritos');
   const isWatchedPage = pathname.startsWith('/assistidos');
+
+  const { mutate: setAutoplayEnabled } = useEnableAutoplay({});
+
+  const handleChangeAutoplay = (checked: boolean) => {
+    setAutoplayEnabled(
+      { userId, enabled: checked },
+      {
+        onSuccess: async () => {
+          const queryKey = generateGetIsAutoplayEnabledQueryKey({ userId });
+
+          await queryClient.invalidateQueries({
+            queryKey,
+            refetchType: 'all',
+          });
+        },
+      },
+    );
+  };
+
+  const favoritesPageBasePath = `/favoritos/video`;
+  const watchedPageBasePath = `/assistidos/video`;
+  const videoBasePath = `/video`;
+
+  const videoHref = (videoId: number) => {
+    if (isFavoritesPage) return `${favoritesPageBasePath}/${videoId}`;
+    if (isWatchedPage) return `${watchedPageBasePath}/${videoId}`;
+    return `${videoBasePath}/${videoId}`;
+  };
+
   return (
     <aside className="flex lg:w-1/3 w-full lg:max-w-80 flex-col gap-4 h-full">
       <section className="rounded-xl h-12 text-accent-foreground bg-foreground w-full p-4 flex justify-between items-center">
         <label htmlFor="autoplay" className="cursor-pointer text-xs">
           Reprodução automática
         </label>
-        <Switch id="autoplay" checked={autoplay} onCheckedChange={onChangeAutoplay} />
+        <Switch id="autoplay" checked={isAutoplayEnabled} onCheckedChange={handleChangeAutoplay} />
       </section>
 
-      {isLoading ? (
+      {videos.length > 0 ? (
         <section className="flex flex-col gap-2">
-          <div className="flex flex-col gap-4 p-2 flex-1 w-full">
-            <PlaylistSkeleton />
-          </div>
-        </section>
-      ) : videos.length > 0 ? (
-        <section className="flex flex-col gap-2">
-          <div className="flex flex-col gap-4 p-2 flex-1 w-full">
-            {isLoading ? (
+          <div className="flex flex-col gap-4 py-2 flex-1 w-full">
+            {videos.map((video) => (
+              <VideoCard key={video.id} href={videoHref(video.id)} video={video} />
+            ))}
+
+            <InfiniteScrollObserver isLoading={isFetchingNextPage} fetchNextPage={fetchNextPage}>
               <PlaylistSkeleton />
-            ) : (
-              videos.map((video) => {
-                const previewFile =
-                  video.video_files?.find((file) => file.quality === 'sd') ||
-                  video.video_files?.[0];
-
-                return (
-                  <VideoCard
-                    key={video.id}
-                    href={
-                      isFavoritesPage
-                        ? `/favoritos/video/${video.id}`
-                        : isWatchedPage
-                          ? `/assistidos/video/${video.id}`
-                          : `/video/${video.id}`
-                    }
-                    title={video.url}
-                    duration={video.duration}
-                    thumbnail={video.image}
-                    author={capitalizeWords(video.user.name)}
-                    videoUrl={previewFile?.link}
-                  />
-                );
-              })
-            )}
-
-            <InView
-              as="div"
-              threshold={0}
-              onChange={handleChangeLoader}
-              className="flex flex-col gap-4 flex-1 w-full"
-            >
-              {isFetchingNextPage && <PlaylistSkeleton />}
-            </InView>
+            </InfiniteScrollObserver>
           </div>
         </section>
       ) : (

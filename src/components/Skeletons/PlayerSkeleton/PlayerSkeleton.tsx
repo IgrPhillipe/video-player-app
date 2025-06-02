@@ -1,4 +1,4 @@
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const PlayerSkeleton = () => (
   <article className="flex flex-col lg:sticky top-6 w-full bg-foreground rounded-xl h-fit">

@@ -4,6 +4,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 
+import { ResponsiveSidebarTrigger } from '@/components/Sidebar/ResponsiveSidebarTrigger';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -16,9 +17,8 @@ import {
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useIsMobile } from '@/hooks/useIsMobile';
+import { useIsMobile } from '@/hooks';
 import { cn } from '@/lib/utils';
-import { ResponsiveSidebarTrigger } from '../Sidebar/ResponsiveSidebarTrigger';
 import { PanelLeftCloseIcon } from './panel-left-close';
 import { PanelLeftOpenIcon } from './panel-left-open';
 
@@ -71,11 +71,11 @@ const SidebarProvider = React.forwardRef<
     ref,
   ) => {
     const isMobile = useIsMobile();
-    const [openMobile, setOpenMobile] = React.useState(false);
+    const [openMobile, setOpenMobile] = React.useState<boolean>(false);
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen);
+    const [_open, _setOpen] = React.useState<boolean>(defaultOpen);
     const open = openProp ?? _open;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {

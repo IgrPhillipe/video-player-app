@@ -1,7 +1,7 @@
 import { removeFromFavorites } from '@/api/actions';
+import { useMutationApi } from '@/api/common';
 import { DefaultMutationConfig } from '@/api/common/types';
-import { useMutationApi } from '@/api/common/useMutationApi';
-import { RemoveFavoriteParams, RemoveFavoriteResponse } from '../../types';
+import { RemoveFavoriteParams, RemoveFavoriteResponse } from '@/api/videos/types';
 
 type useRemoveFavorite = {
   mutationConfig?: DefaultMutationConfig<RemoveFavoriteResponse, RemoveFavoriteParams>;

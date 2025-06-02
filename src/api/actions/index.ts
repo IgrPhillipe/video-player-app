@@ -3,13 +3,12 @@
 import { randomUUID } from 'crypto';
 import { cookies } from 'next/headers';
 
+import { PaginatedResponse } from '@/api/common';
 import { Video } from '@/api/videos';
-import { COLLECTION_NAME, DB_NAME, DEFAULT_PER_PAGE, USER_COOKIE_NAME } from '@/config';
+import { COLLECTION_NAME, DB_NAME, USER_COOKIE_NAME } from '@/config';
 import clientPromise from '@/lib/mongodb';
 import { User } from '@/types/user';
 import { parseTitle } from '@/utils/parser';
-import { PaginationParams } from '../common/types';
-import { PaginatedResponse } from '../common/useInfiniteQueryApi';
 
 export const getUserCollection = async () => {
   const client = await clientPromise;
@@ -35,6 +34,7 @@ export const getUserId = async (): Promise<string> => {
       _id: userId,
       favoriteVideos: [],
       watchedVideos: [],
+      autoplay: false,
     });
   }
 
@@ -57,20 +57,15 @@ export const addToWatched = async (video: Video): Promise<void> => {
 };
 
 export const getWatchedVideos = async ({
-  page,
   search,
-  fromVideoId,
-}: PaginationParams & { search?: string; fromVideoId?: number }): Promise<PaginatedResponse> => {
+}: {
+  search?: string;
+}): Promise<PaginatedResponse> => {
   const userId = await getUserId();
   const collection = await getUserCollection();
 
   const user = await collection.findOne({ _id: userId });
-  let watchedVideos = user?.watchedVideos || [];
-
-  if (fromVideoId) {
-    const index = watchedVideos.findIndex((video) => video.id === fromVideoId);
-    watchedVideos = watchedVideos.slice(index + 1);
-  }
+  const watchedVideos = user?.watchedVideos || [];
 
   const filteredVideos = watchedVideos.filter((video) => {
     if (!search) return true;
@@ -80,14 +75,11 @@ export const getWatchedVideos = async ({
     return title.toLowerCase().includes(search?.toLowerCase() || '');
   });
 
-  const startIndex = (page - 1) * DEFAULT_PER_PAGE;
-  const endIndex = startIndex + DEFAULT_PER_PAGE;
-
   return {
-    videos: filteredVideos.slice(startIndex, endIndex),
+    videos: filteredVideos,
     total_results: filteredVideos.length,
-    page,
-    per_page: DEFAULT_PER_PAGE,
+    page: 1,
+    per_page: filteredVideos.length,
   };
 };
 
@@ -120,20 +112,15 @@ export const removeFromFavorites = async (videoId: number): Promise<void> => {
 };
 
 export const getFavoriteVideos = async ({
-  page,
   search,
-  fromVideoId,
-}: PaginationParams & { search?: string; fromVideoId?: number }): Promise<PaginatedResponse> => {
+}: {
+  search?: string;
+}): Promise<PaginatedResponse> => {
   const userId = await getUserId();
   const collection = await getUserCollection();
 
   const user = await collection.findOne({ _id: userId });
-  let favoriteVideos = user?.favoriteVideos || [];
-
-  if (fromVideoId) {
-    const index = favoriteVideos.findIndex((video) => video.id === fromVideoId);
-    favoriteVideos = favoriteVideos.slice(index + 1);
-  }
+  const favoriteVideos = user?.favoriteVideos || [];
 
   const filteredVideos = favoriteVideos.filter((video) => {
     if (!search) return true;
@@ -143,14 +130,11 @@ export const getFavoriteVideos = async ({
     return title.toLowerCase().includes(search?.toLowerCase() || '');
   });
 
-  const startIndex = (page - 1) * DEFAULT_PER_PAGE;
-  const endIndex = startIndex + DEFAULT_PER_PAGE;
-
   return {
-    videos: filteredVideos.slice(startIndex, endIndex),
+    videos: filteredVideos,
     total_results: filteredVideos.length,
-    page,
-    per_page: DEFAULT_PER_PAGE,
+    page: 1,
+    per_page: filteredVideos.length,
   };
 };
 
@@ -176,4 +160,19 @@ export const isVideoWatched = async (videoId: number): Promise<boolean> => {
   });
 
   return !!user;
+};
+
+export const isAutoplayEnabled = async (): Promise<boolean> => {
+  const userId = await getUserId();
+  const collection = await getUserCollection();
+
+  const user = await collection.findOne({ _id: userId });
+  return user?.autoplay || false;
+};
+
+export const setAutoplayEnabled = async (enabled: boolean): Promise<void> => {
+  const userId = await getUserId();
+  const collection = await getUserCollection();
+
+  await collection.updateOne({ _id: userId }, { $set: { autoplay: enabled } });
 };

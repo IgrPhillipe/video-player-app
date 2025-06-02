@@ -1,12 +1,9 @@
+import { COLLECTION_NAME, DB_NAME, USER_COOKIE_NAME } from '@/config';
 import clientPromise from '@/lib/mongodb';
 import { User } from '@/types/user';
 import { randomUUID } from 'crypto';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-
-const USER_COOKIE_NAME = 'user_id';
-const DB_NAME = 'video_player_app';
-const COLLECTION_NAME = 'users';
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
@@ -25,6 +22,7 @@ export async function GET(request: Request) {
 
     await collection.insertOne({
       _id: userId,
+      autoplay: false,
       favoriteVideos: [],
       watchedVideos: [],
     });

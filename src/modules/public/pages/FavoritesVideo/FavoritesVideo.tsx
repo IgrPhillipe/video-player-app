@@ -1,10 +1,11 @@
 'use client';
 
-import { HydrationBoundary } from '@tanstack/react-query';
-import { FavoritesVideoContent } from '../components';
+import { DehydratedState, HydrationBoundary } from '@tanstack/react-query';
+
+import { FavoritesVideoContent } from '@/modules/public/components';
 
 type FavoritesVideoProps = {
-  dehydratedState: unknown;
+  dehydratedState: DehydratedState;
   userId: string;
 };
 

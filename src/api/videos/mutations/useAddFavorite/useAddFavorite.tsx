@@ -1,7 +1,7 @@
 import { addToFavorites } from '@/api/actions';
+import { useMutationApi } from '@/api/common';
 import { DefaultMutationConfig } from '@/api/common/types';
-import { useMutationApi } from '@/api/common/useMutationApi';
-import { AddFavoriteParams, AddFavoriteResponse } from '../../types';
+import { AddFavoriteParams, AddFavoriteResponse } from '@/api/videos/types';
 
 type useAddFavorite = {
   mutationConfig?: DefaultMutationConfig<AddFavoriteResponse, AddFavoriteParams>;

@@ -1,10 +1,10 @@
 'use client';
 
-import { HydrationBoundary } from '@tanstack/react-query';
-import { FavoritesContent } from '../components';
+import { FavoritesContent } from '@/modules/public/components';
+import { DehydratedState, HydrationBoundary } from '@tanstack/react-query';
 
 type FavoritesProps = {
-  dehydratedState: unknown;
+  dehydratedState: DehydratedState;
   userId: string;
 };
 

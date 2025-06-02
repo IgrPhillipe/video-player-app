@@ -37,13 +37,13 @@ export type Video = {
 
 export type GetVideosParams = {
   search?: string;
-  videoId?: string;
+  videoId?: number;
 };
 
 export type GetVideosResponse = PaginatedResponse;
 
 export type GetVideoByIdParams = {
-  videoId: string;
+  videoId: number;
 };
 
 export type GetVideoByIdResponse = Video;
@@ -75,7 +75,6 @@ export type AddWatchedResponse = void;
 export type GetFavoritesParams = {
   userId: string;
   search?: string;
-  fromVideoId?: number;
 };
 
 export type GetFavoritesResponse = PaginatedResponse;
@@ -83,7 +82,19 @@ export type GetFavoritesResponse = PaginatedResponse;
 export type GetWatchedParams = {
   userId: string;
   search?: string;
-  fromVideoId?: number;
 };
 
 export type GetWatchedResponse = PaginatedResponse;
+
+export type GetIsAutoplayEnabledParams = {
+  userId: string;
+};
+
+export type GetIsAutoplayEnabledResponse = boolean;
+
+export type EnableAutoplayParams = {
+  userId: string;
+  enabled: boolean;
+};
+
+export type EnableAutoplayResponse = void;

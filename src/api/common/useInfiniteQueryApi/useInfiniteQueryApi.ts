@@ -1,6 +1,6 @@
+import { DefaultInfiniteQueryConfig } from '@/api/common/types';
 import { Video } from '@/api/videos/types';
 import { InfiniteData, useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query';
-import { DefaultInfiniteQueryConfig } from '../types';
 
 export type PaginatedResponse = {
   page: number;

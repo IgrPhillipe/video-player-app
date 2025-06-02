@@ -11,7 +11,15 @@ export const VideosSkeleton = ({ isResponsive = false }: VideosSkeletonProps) =>
     '(min-width: 640px)',
   ]);
 
-  const cols = isResponsive ? (is4Cols ? 4 : is3Cols ? 3 : is2Cols ? 2 : 1) : 12;
+  const getColumnCount = () => {
+    if (!isResponsive) return 12;
+    if (is4Cols) return 4;
+    if (is3Cols) return 3;
+    if (is2Cols) return 2;
+    return 1;
+  };
+
+  const cols = getColumnCount();
 
   return (
     <>

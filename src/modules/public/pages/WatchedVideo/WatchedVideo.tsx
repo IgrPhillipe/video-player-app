@@ -1,10 +1,10 @@
 'use client';
 
-import { HydrationBoundary } from '@tanstack/react-query';
-import { WatchedVideoContent } from '../components';
+import { WatchedVideoContent } from '@/modules/public/components';
+import { DehydratedState, HydrationBoundary } from '@tanstack/react-query';
 
 type WatchedVideoProps = {
-  dehydratedState: unknown;
+  dehydratedState: DehydratedState;
   userId: string;
 };
 

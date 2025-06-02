@@ -8,10 +8,16 @@ type useGetFavoritesProps = {
   queryConfig?: DefaultInfiniteQueryConfig<GetFavoritesResponse>;
 };
 
+export const generateGetFavoritesQueryKey = (params: Partial<GetFavoritesParams>) => [
+  'favorite-videos',
+  params.userId,
+  params.search,
+];
+
 export const useGetFavorites = ({ params, queryConfig }: useGetFavoritesProps) =>
   useInfiniteQueryApi<GetFavoritesResponse, GetFavoritesParams>({
     queryConfig,
-    queryKey: ['favorite-videos', params.userId, params.search, params.fromVideoId],
+    queryKey: generateGetFavoritesQueryKey(params),
     params,
     queryFn: getFavoriteVideos,
   });

@@ -1,4 +1,6 @@
 import { getFavoriteVideos, getUserId } from '@/api/actions';
+import { generateGetFavoritesQueryKey } from '@/api/videos';
+import { VideosSkeleton } from '@/components/Skeletons';
 import { Favorites } from '@/modules/public/pages';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { Suspense } from 'react';
@@ -8,15 +10,19 @@ export default async function FavoritesPage() {
 
   const userId = await getUserId();
 
+  const queryKey = generateGetFavoritesQueryKey({
+    userId,
+  });
+
   await queryClient.prefetchQuery({
-    queryKey: ['favorite-videos', userId, undefined, undefined],
-    queryFn: () => getFavoriteVideos({ page: 1, search: undefined }),
+    queryKey,
+    queryFn: () => getFavoriteVideos({}),
   });
 
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<VideosSkeleton />}>
       <Favorites dehydratedState={dehydratedState} userId={userId} />
     </Suspense>
   );
