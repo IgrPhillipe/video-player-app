@@ -3,6 +3,7 @@ import { useEnableAutoplay } from '@/api/videos/mutations';
 import { PlaylistSkeleton } from '@/components/Skeletons';
 import { Switch } from '@/components/ui/switch';
 import { VideoCard } from '@/components/VideoCard';
+import { getIdFromUri } from '@/utils/functions';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import { InfiniteScrollObserver } from '../InfiniteScrollObserver';
@@ -68,9 +69,11 @@ export const Playlist = ({
       {videos.length > 0 ? (
         <section className="flex flex-col gap-2">
           <div className="flex flex-col gap-4 py-2 flex-1 w-full">
-            {videos.map((video) => (
-              <VideoCard key={video.id} href={videoHref(video.id)} video={video} />
-            ))}
+            {videos.map((video) => {
+              const videoId = getIdFromUri(video.uri);
+
+              return <VideoCard key={videoId} href={videoHref(videoId)} video={video} />;
+            })}
 
             <InfiniteScrollObserver isLoading={isFetchingNextPage} fetchNextPage={fetchNextPage}>
               <PlaylistSkeleton />

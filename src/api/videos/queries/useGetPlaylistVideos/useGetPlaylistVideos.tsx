@@ -1,6 +1,6 @@
 import { DefaultInfiniteQueryConfig } from '@/api/common/types';
 import { useInfiniteQueryApi } from '@/api/common/useInfiniteQueryApi';
-import { getVideos } from '@/api/videos/requests';
+import { getRelatedVideos } from '@/api/videos/requests';
 import { GetVideosParams, GetVideosResponse } from '@/api/videos/types';
 
 type UseGetPlaylistVideosProps = {
@@ -18,5 +18,5 @@ export const useGetPlaylistVideos = ({ params, queryConfig }: UseGetPlaylistVide
     ...queryConfig,
     queryKey: generateGetPlaylistVideosQueryKey(params),
     params,
-    queryFn: getVideos,
+    queryFn: getRelatedVideos,
   });

@@ -1,5 +1,45 @@
 import { PaginatedResponse } from '@/api/common/useInfiniteQueryApi';
 
+export type Embed = {
+  html: string;
+};
+
+export type Size = {
+  width: number;
+  height: number;
+  link: string;
+  link_with_play_button: string;
+};
+
+export type Pictures = {
+  uri: string;
+  active: boolean;
+  type: string;
+  base_link: string;
+  sizes: Size[];
+  resource_key: string;
+  default_picture: boolean;
+};
+
+export type Video = {
+  uri: string;
+  name: string;
+  description: string;
+  type: string;
+  link: string;
+  player_embed_url: string;
+  duration: number;
+  embed: Embed;
+  pictures: Pictures;
+  user: VimeoUser;
+  width: number;
+  height: number;
+};
+
+export type VimeoUser = {
+  name: string;
+};
+
 export type VideoAuthor = {
   id: number;
   name: string;
@@ -21,19 +61,19 @@ export type VideoPicture = {
   nr: number;
 };
 
-export type Video = {
-  id: number;
-  width: number;
-  height: number;
-  url: string;
-  image: string;
-  full_res: string | null;
-  tags: string[];
-  duration: number;
-  user: VideoAuthor;
-  video_files: VideoFile[];
-  video_pictures: VideoPicture[];
-};
+// export type Video = {
+//   id: number;
+//   width: number;
+//   height: number;
+//   url: string;
+//   image: string;
+//   full_res: string | null;
+//   tags: string[];
+//   duration: number;
+//   user: VideoAuthor;
+//   video_files: VideoFile[];
+//   video_pictures: VideoPicture[];
+// };
 
 export type GetVideosParams = {
   search?: string;

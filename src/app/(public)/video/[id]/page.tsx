@@ -7,7 +7,6 @@ import {
 } from '@/api/videos';
 import { VideoContentSkeleton } from '@/components/Skeletons';
 import { Video } from '@/modules/public/pages';
-import { parseTitle } from '@/utils/parser';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
@@ -25,13 +24,15 @@ export const generateMetadata = async ({ params }: VideoPageProps) => {
     return notFound();
   }
 
+  const title = video.name;
+
   return {
-    title: parseTitle(video.url),
+    title,
     description: video.user.name,
     openGraph: {
-      title: parseTitle(video.url),
+      title,
       description: video.user.name,
-      images: video.image,
+      images: video.pictures.base_link,
     },
   };
 };
@@ -50,7 +51,7 @@ export default async function VideoPage({ params }: VideoPageProps) {
     return notFound();
   }
 
-  const title = parseTitle(video?.url);
+  const title = video.name;
 
   await queryClient.prefetchQuery({
     queryKey: generateGetVideoByIdQueryKey({ videoId }),
