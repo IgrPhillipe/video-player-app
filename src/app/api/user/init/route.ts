@@ -13,6 +13,8 @@ export async function GET(request: Request) {
     userId = randomUUID();
     cookieStore.set(USER_COOKIE_NAME, userId, {
       httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 5,
     });
 
